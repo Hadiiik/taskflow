@@ -3,7 +3,7 @@ import userInfo from '@/types/userInfo'
 import Link from 'next/link';
 import React, { useState } from 'react'
 
-const page = () => {
+const Page = () => {
     const [userInfo, setUserInfo] = useState<userInfo>({
         email: "",
         password: ""
@@ -63,4 +63,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
