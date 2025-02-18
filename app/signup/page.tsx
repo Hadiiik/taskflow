@@ -1,4 +1,5 @@
 "use client"
+import client_signup from '@/auth/client/signup';
 import userInfo from '@/types/userInfo'
 import Link from 'next/link';
 import React, { useState } from 'react'
@@ -6,12 +7,17 @@ import React, { useState } from 'react'
 const Page = () => {
     const [userInfo, setUserInfo] = useState<userInfo>({
         email: "",
+        name:"",
         password: ""
     });
 
-    const handelSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handelSubmit =  async (e: React.FormEvent<HTMLFormElement>) => {
+        //to do handel errors and loading...
         e.preventDefault();
         console.log(userInfo);
+        const result = await client_signup({...userInfo});
+        console.log(result)
+
     };
 
     return (
@@ -27,6 +33,20 @@ const Page = () => {
                         placeholder="example@gmail.com"
                         value={userInfo.email}
                         onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+                        required
+                        className="w-full p-3 rounded-md border border-violet-500 bg-violet-300 text-black focus:ring focus:ring-amber-500 focus:outline-none"
+                    />
+                </div>
+
+
+                <div>
+                    <label htmlFor="name" className="block text-sm text-violet-50 mb-2"> الاسم</label>
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="الاسم"
+                        value={userInfo.name}
+                        onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
                         required
                         className="w-full p-3 rounded-md border border-violet-500 bg-violet-300 text-black focus:ring focus:ring-amber-500 focus:outline-none"
                     />

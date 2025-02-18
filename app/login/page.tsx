@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 const Page = () => {
     const [userInfo, setUserInfo] = useState<userInfo>({
         email: "",
+        name:"",
         password: ""
     });
 
