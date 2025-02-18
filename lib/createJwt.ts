@@ -20,7 +20,7 @@ export const decodeJWT = (token: string) => {
     if(!SECRET_KEY) return;
     const decoded = jwt.verify(token, SECRET_KEY);
     return decoded;  // هنا ستحصل على الكائن الأصلي
-  } catch (error) {
+  } catch  {
     return null;  // في حالة حدوث خطأ (مثل التوكن غير صالح أو منتهي الصلاحية)
   }
 };

@@ -11,7 +11,7 @@ export async function POST(req: NextRequest){
 
     //to do check if email exits 
 
-    const {data,error} = await supabase
+    const {error} = await supabase
                         .from("users")
                         .insert({"email":request_body.email,
                                 "name":request_body.name,
@@ -19,7 +19,6 @@ export async function POST(req: NextRequest){
                         })
     if (error) {
         //add wait 2s
-        console.log(error)
         return NextResponse.json({ status: 400, message: "bad format" });
     }
     //to do set jwt 
