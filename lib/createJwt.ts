@@ -21,7 +21,6 @@ export const decodeJWT = (token: string) => {
     const decoded = jwt.verify(token, SECRET_KEY);
     return decoded;  // هنا ستحصل على الكائن الأصلي
   } catch (error) {
-    console.error("Error decoding JWT:", error);
     return null;  // في حالة حدوث خطأ (مثل التوكن غير صالح أو منتهي الصلاحية)
   }
 };

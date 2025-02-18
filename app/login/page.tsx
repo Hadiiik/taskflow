@@ -1,6 +1,8 @@
 "use client"
+import client_login from '@/auth/client/login';
 import userInfo from '@/types/userInfo'
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React, { useState } from 'react'
 
 const Page = () => {
@@ -10,9 +12,12 @@ const Page = () => {
         password: ""
     });
 
-    const handelSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(userInfo);
+        const result = await client_login({...userInfo});
+        if(result.success===true)
+            redirect("/")// redirect to user page 
+        console.log(result)
     };
 
     return (

@@ -1,4 +1,5 @@
 import createJwt from "@/lib/createJwt";
+import { getUserIp } from "@/lib/helpers";
 import { supabase } from "@/lib/supabase";
 import userInfo from "@/types/userInfo";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,7 +25,11 @@ export async function POST(req: NextRequest){
     //to do set jwt 
 
     const response = NextResponse.json({ status: 200, message: "ok" });
-    const jwt = createJwt({"user":"user"});
+    const user_ip = getUserIp(req)||"";
+    const jwt = createJwt({
+        email:request_body.email,
+        user_ip:user_ip
+    });
 
     response.cookies.set("jwt",jwt||"");
     return response;
