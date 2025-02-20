@@ -25,7 +25,7 @@ const TeamSection = () => {
             href="/create-team"
             className="flex items-center justify-center bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto"
           >
-            <Image src="/icons/create-team.svg" alt="إنشاء فريق" width={30} height={30} />
+            <Image src="/create-team.svg" alt="إنشاء فريق" width={30} height={30} />
             <span className="ml-3">إنشاء فريق</span>
           </Link>
 
@@ -34,7 +34,7 @@ const TeamSection = () => {
             href="/join-team"
             className="flex items-center justify-center bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto"
           >
-            <Image src="/icons/join-team.svg" alt="انضمام إلى فريق" width={30} height={30} />
+            <Image src="/join-team.svg" alt="انضمام إلى فريق" width={30} height={30} />
             <span className="ml-3">انضمام إلى فريق</span>
           </Link>
         </div>
