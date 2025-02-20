@@ -21,6 +21,9 @@ const client_login = async (userInfo: userInfo) => {
     const data = await response.json();
 
     if (data.status == 200) {
+      //we maybe would have to use them to login in auto
+      localStorage.setItem("hased_password",userInfo.password);
+      localStorage.setItem("email",userInfo.email)
       // تخزين JWT في الكوكيز أو المحفوظات حسب الحاجة
       return { success: true, message: "Login successful", jwt: data.jwt };
     } else {

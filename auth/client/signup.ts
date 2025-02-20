@@ -16,11 +16,11 @@ const client_signup = async (userInfo: userInfo) => {
       },
       body: JSON.stringify(userInfo),
     });
-    console.log("1");
     const data = await response.json();
-    console.log("data: ")
-    console.log(data)
     if (data.status == 200) {
+      //we maybe would have to use them to login in auto
+      localStorage.setItem("hased_password",userInfo.password);
+      localStorage.setItem("email",userInfo.email)
       return { success: true, message: "User registered successfully" };
     } else {
       return { success: false, message: data.message || "An error occurred during registration" };
