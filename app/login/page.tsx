@@ -16,7 +16,7 @@ const Page = () => {
         e.preventDefault();
         const result = await client_login({...userInfo});
         if(result.success===true)
-            redirect("/")// redirect to user page 
+            redirect("/account")// redirect to user page 
         console.log(result)
     };
 

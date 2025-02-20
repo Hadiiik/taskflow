@@ -2,6 +2,7 @@
 import client_signup from '@/auth/client/signup';
 import userInfo from '@/types/userInfo'
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React, { useState } from 'react'
 
 const Page = () => {
@@ -16,6 +17,8 @@ const Page = () => {
         e.preventDefault();
         console.log(userInfo);
         const result = await client_signup({...userInfo});
+        if(result.success===true)
+            redirect("/account")
         console.log(result)
 
     };
