@@ -7,7 +7,7 @@ import userInfo from "@/types/userInfo";
 export async function POST(req: NextRequest) {
     const request_body: userInfo = await req.json();
 
-    // to do make custom check type 
+    // التحقق من وجود الـ email وكلمة المرور
     if (!request_body.email || !request_body.password) {
         return NextResponse.json({ status: 400, message: "Email and password are required" });
     }
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     // التحقق من وجود المستخدم في قاعدة البيانات
     const { data: user, error } = await supabase
         .from("users")
-        .select("email, hashed_password")
+        .select("id, email, hashed_password") // إضافة الـ id
         .eq("email", request_body.email)
         .single();
 
@@ -24,20 +24,21 @@ export async function POST(req: NextRequest) {
     }
 
     // تحقق من كلمة المرور (مثال بسيط مع تطابق كلمات المرور)
-    // في حال كان لديك مكتبة للتحقق من كلمة المرور مثل bcrypt، قم باستخدامها هنا.
     if (user.hashed_password !== request_body.password) {
         return NextResponse.json({ status: 401, message: "Invalid credentials" });
     }
 
-    // توليد JWT وتخزينه في الكوكيز
+    // توليد الـ JWT مع إضافة الـ id في الـ payload
     const user_ip = getUserIp(req) || "";
     const jwt = createJwt({
         email: request_body.email,
         user_ip: user_ip,
+        id: user.id,  // إضافة الـ id
+        team_id_arry : [""]
     });
 
     const response = NextResponse.json({ status: 200, message: "Login successful" });
-    response.cookies.set("jwt", jwt || "");
+    response.cookies.set("jwt", jwt || "", { path: "/" });
 
     return response;
 }

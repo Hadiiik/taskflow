@@ -22,7 +22,7 @@ const TeamSection = () => {
         <div className='flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-6 justify-center'>
           {/* زر إنشاء فريق */}
           <Link
-            href={'account/create-team'}
+            href={'/pricing'}
             className='flex items-center justify-center bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto'
           >
             <Image src={'/create-team.svg'} alt={'إنشاء فريق'} width={30} height={30} />

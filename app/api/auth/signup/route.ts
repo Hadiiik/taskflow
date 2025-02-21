@@ -11,12 +11,17 @@ export async function POST(req: NextRequest){
 
     //to do check if email exits 
 
-    const {error} = await supabase
-                        .from("users")
-                        .insert({"email":request_body.email,
-                                "name":request_body.name,
-                                "hashed_password":request_body.password
-                        })
+    const { data, error } = await supabase
+  .from("users")
+  .insert([
+    {
+      email: request_body.email,
+      name: request_body.name,
+      hashed_password: request_body.password,
+    }
+  ])
+  .select('id')
+  .single(); // تحديد أنك تريد إرجاع الـ id فقط
     if (error) {
         //add wait 2s
         return NextResponse.json({ status: 400, message: "bad format" });
@@ -26,10 +31,12 @@ export async function POST(req: NextRequest){
     const response = NextResponse.json({ status: 200, message: "ok" });
     const user_ip = getUserIp(req)||"";
     const jwt = createJwt({
-        email:request_body.email,
-        user_ip:user_ip
+        email: request_body.email,
+        user_ip: user_ip,
+        id: data.id,
+        team_id_arry : [""]
     });
 
-    response.cookies.set("jwt",jwt||"");
+    response.cookies.set("jwt",jwt||"",{path:"/"});
     return response;
 }

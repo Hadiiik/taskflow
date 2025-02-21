@@ -13,7 +13,7 @@ export default createJwt;
 
 // الـ secret key الذي تم استخدامه لإنشاء التوكن
 // دالة لفك تشفير الـ JWT
-export const decodeJWT = (token: string) => {
+export const decodeJWT = (token: string)  => {
   try {
     // فك تشفير التوكن باستخدام secret key
     const SECRET_KEY = process.env.ACSSES_TOKEN_SCRET;
