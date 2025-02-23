@@ -38,6 +38,8 @@ export async function POST(req: NextRequest) {
         
   } catch (e) {
     // التعامل مع الأخطاء العامة
+    // لا تشيل هاد السطر كمان عبين ما نلغي قاعدة never used
+    console.log(e)
     return NextResponse.json({ e: "Failed to create team" }, { status: 500 });
   }
 }
