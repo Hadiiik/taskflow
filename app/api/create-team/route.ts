@@ -36,8 +36,8 @@ export async function POST(req: NextRequest) {
     console.log(jwt_user);
     return response;
         
-  } catch (error) {
+  } catch (e) {
     // التعامل مع الأخطاء العامة
-    return NextResponse.json({ error: "Failed to create team" }, { status: 500 });
+    return NextResponse.json({ e: "Failed to create team" }, { status: 500 });
   }
 }
