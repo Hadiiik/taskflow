@@ -34,7 +34,7 @@ export async function POST(req: NextRequest){
         email: request_body.email,
         user_ip: user_ip,
         id: data.id,
-        team_id_arry : [""]
+        team_id_arry : null
     });
 
     response.cookies.set("jwt",jwt||"",{path:"/"});

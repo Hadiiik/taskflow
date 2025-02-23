@@ -18,7 +18,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   membersCount 
 }) => {
   return (
-    <div className="max-w-md md:mx-auto mx-6 p-6 bg-white rounded-xl border-2 border-violet-500 m-12 mb-0">
+    <div className=" max-w-md md:mx-auto mx-6 p-6 bg-white rounded-xl border-2 border-violet-500 m-12 mb-0">
       
 
       <div className="text-center">
@@ -41,7 +41,7 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         </div>
 
         {/* زر الاشتراك */}
-        <Link href={'account/create-team'}
+        <Link href={`account/create-team?subscriptionType=${subscriptionName}`}
         className="w-full py-3 bg-violet-900 text-white rounded-md text-lg hover:bg-violet-700 focus:bg-violet-700 transition duration-300 block"
         >
         اشتراك الآن

@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const TeamSection = () => {
   return (
-    <section className='bg-gradient-to-r from-indigo-100 via-purple-200 to-indigo-100 py-12 px-6 md:px-16 text-gray-800 rounded-lg shadow-lg'>
+    <section className='bg-gradient-to-r from-indigo-100 via-purple-200 to-indigo-100 py-12 px-6 md:px-16 text-gray-800 rounded-lg shadow-sm'>
       <div className='max-w-4xl mx-auto text-center'>
         <h2 className='text-4xl font-bold text-indigo-900 mb-6'>إدارة الفرق بسهولة</h2>
 
