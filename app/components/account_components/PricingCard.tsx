@@ -1,6 +1,5 @@
 import React from 'react'
 import SubscriptionCard from '../SubsecribtionCard'
-import AccountHeader from './AccountHeader'
 
 const subscriptions = [
     {

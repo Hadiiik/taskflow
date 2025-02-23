@@ -19,8 +19,9 @@ export async function POST(req: NextRequest) {
         }
       ])
       .select("team_id")
-      .single(); 
-
+      .single();
+    // هاد السطر لا تشيلو    
+    console.log(data,error)
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
