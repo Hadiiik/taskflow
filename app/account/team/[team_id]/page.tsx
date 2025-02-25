@@ -1,12 +1,12 @@
 import { cookies } from 'next/headers';
 import React from 'react';
 
-type Params = { team_id: number | string };
+type Params = { team_id: string | number };
 
 const Page = async ({ params }: { params: Params }) => {
-  // الوصول إلى الكوكيز من الخادم
-  const jwt = (await cookies()).get('jwt')?.value || null;
-  
+  // استخدام await للحصول على الكوكيز
+  const cookieStore = await cookies();
+  const jwt = cookieStore.get('jwt')?.value || null;
 
   return (
     <div>
