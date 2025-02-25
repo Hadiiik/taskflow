@@ -4,7 +4,7 @@ import { team } from "@/types/team";
   const createTeam = async (team: team) => {
     try {
       // استخدام await لجلب استجابة الطلب
-      const response = await fetch('/api/team', {
+      const response = await fetch('/api/create-team', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -14,10 +14,9 @@ import { team } from "@/types/team";
   
       // الانتظار للحصول على البيانات في الاستجابة
       const data = await response.json();
-  
       // التحقق من حالة الاستجابة
       if (response.ok) {
-        return { success: true, message: 'Team created successfully!' };
+        return { success: true, message: 'Team created successfully!' , team_id : data.team_id };
       } else {
         return { success: false, message: data.error || 'Failed to create team' };
       }
@@ -28,3 +27,5 @@ import { team } from "@/types/team";
     }
   };
   
+
+export default createTeam;

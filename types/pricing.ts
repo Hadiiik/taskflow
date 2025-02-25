@@ -12,3 +12,10 @@ export type PlanDetails = {
 export type Pricing = {
   [key in SubscriptionType]: PlanDetails;
 };
+
+export const getSubType =(sub:string):SubscriptionType=>{
+  if(sub==="مجاني") return "beginner"
+  if(sub==="اساسي") return "basic"
+  if(sub==="محترف") return "pro"
+  return "beginner"
+}

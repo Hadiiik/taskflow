@@ -1,5 +1,8 @@
 "use client"
 
+import createTeam from '@/client_helpers/create_team';
+import { getSubType } from '@/types/pricing';
+import { redirect } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 const CreateTeamForm = () => {
@@ -31,13 +34,25 @@ const CreateTeamForm = () => {
     };
 
     // دالة لمعالجة إرسال النموذج
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         console.log({
             companyName,
             teamName,
             subscriptionType,
         });
+        const result = await createTeam({
+            team_name: teamName,
+            company_name : companyName,
+            team_type : getSubType(subscriptionType),
+            creator_id : 0
+        })
+        console.log(result)
+        if(result.success === false){
+            // هون بنا نطرح رسالة خطأ
+            return
+        }
+        redirect(`/account/team/${result.team_id}`)
     };
 
     return (

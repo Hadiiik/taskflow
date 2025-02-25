@@ -34,11 +34,11 @@ export async function POST(req: NextRequest) {
         email: request_body.email,
         user_ip: user_ip,
         id: user.id,  // إضافة الـ id
-        team_id_arry : [""]
+        team_id_arry : null
     });
 
     const response = NextResponse.json({ status: 200, message: "Login successful" });
-    response.cookies.set("jwt", jwt || "", { path: "/" });
+    response.cookies.set("jwt", jwt || "", { path: "/" , maxAge : 60 * 60 * 24 * 365 * 20});
 
     return response;
 }

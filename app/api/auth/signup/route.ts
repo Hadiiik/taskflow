@@ -37,6 +37,6 @@ export async function POST(req: NextRequest){
         team_id_arry : null
     });
 
-    response.cookies.set("jwt",jwt||"",{path:"/"});
+    response.cookies.set("jwt",jwt||"",{path:"/" , maxAge : 60 * 60 * 24 * 365 * 20});
     return response;
 }
