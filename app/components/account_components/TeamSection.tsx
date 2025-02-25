@@ -30,12 +30,12 @@ const TeamSection = () => {
           </Link>
 
           {/* زر انضمام إلى فريق */}
-          <Link
-            href={'/join-team'}
-            className='flex items-center justify-center bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto'
-          >
-            <Image src={'/join-team.svg'} alt={'انضمام إلى فريق'} width={30} height={30} />
-            <span className='ml-3'>انضمام إلى فريق</span>
+          <Link 
+            href={"/account/join-team"}
+          className='flex items-center justify-center bg-indigo-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto'
+            >
+          <Image src={'/join-team.svg'} alt={'انضمام إلى فريق'} width={30} height={30} />
+          <span className='ml-3'>انضمام إلى فريق</span>
           </Link>
         </div>
 

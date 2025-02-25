@@ -7,7 +7,7 @@ interface ErrorMessagePopUPProps {
 
 const ErrorMessagePopUP: React.FC<ErrorMessagePopUPProps> = ({ message, onClose }) => {
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50" dir='rtl'>
             <div className="bg-white rounded-lg shadow-lg w-80 p-6">
                 <h2 className="text-xl font-semibold text-red-500 mb-4">خطأ</h2>
                 <p className="text-gray-700 mb-6">{message}</p>

@@ -10,7 +10,12 @@ const createJwt = (user:jwt_user)=>{
 export default createJwt;
 
 
-
+export const createInviteJwt = (invite:invite_jwt)=>{
+  const token = process.env.ACSSES_TOKEN_SCRET;
+    if(!token) return;
+    const access_token = jwt.sign(invite,token);
+    return access_token;
+}
 // الـ secret key الذي تم استخدامه لإنشاء التوكن
 // دالة لفك تشفير الـ JWT
 export const decodeJWT = (token: string)  => {

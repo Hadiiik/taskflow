@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     // تحويل الطلب إلى JSON
     const body: team = await req.json();
     const jwt = req.cookies.get("jwt");
-const jwt_value = jwt?.value;
+    const jwt_value = jwt?.value;
 
 if (!jwt_value) {
   return NextResponse.json({ error: "Failed to create team" }, { status: 500 });
