@@ -1,26 +1,41 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { accsepetInvite } from '@/client_helpers/accsepet_invite';
+import PopUpCallLink from '../PopUpCallLink';
 
-const getInvite = async (team_id: string | number) => {
-  const result = await accsepetInvite(team_id);
-  
-  // إذا كانت هناك دعوة (invite) في النتيجة
-  if (result.invite) {
-    // تشفير الـ invite
-    const encodedInvite = encodeURIComponent(result.invite);
-    
-    // بناء الرابط
-    const inviteLink = `/account/join-team?invite=${encodedInvite}`;
-    
-    // طباعة الرابط
-    console.log("رابط الدعوة:", inviteLink);
-  }
-};
+
 
 const FloatingButtonsSection = ({ props }: { props: { team_id: string | number } }) => {
+  const [invitPopupVible,setInvitPopupVible] = useState(false);
+  const [invitationLink,setInvitationLink] = useState("")
+
+
+  const getInvite = async (team_id: string | number) => {
+    setInvitPopupVible(false);
+    const result = await accsepetInvite(team_id);
+    
+    // إذا كانت هناك دعوة (invite) في النتيجة
+    if (result.invite) {
+      // تشفير الـ invite
+      const encodedInvite = encodeURIComponent(result.invite);
+      
+      // بناء الرابط
+      const inviteLink = `https://taskflow-onrequest.vercel.app/account/join-team?invite=${encodedInvite}`;
+      setInvitationLink(inviteLink);
+      setInvitPopupVible(true);
+      
+      // طباعة الرابط
+      
+    }
+  };
+
+
   return (
+    <>
+    {
+      invitPopupVible && <PopUpCallLink invitationLink={invitationLink} onClose={()=>setInvitPopupVible(false)}/>
+    }
     <div className='absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-6'>
       {/* زر إنشاء دعوة */}
       <button
@@ -39,6 +54,7 @@ const FloatingButtonsSection = ({ props }: { props: { team_id: string | number }
         <Image src='/create-team.svg' alt='إنشاء جدول' width={30} height={30} />
       </button>
     </div>
+    </>
   );
 };
 

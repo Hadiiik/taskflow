@@ -36,6 +36,8 @@ export async function POST(req: NextRequest){
     if (!jwt_user || typeof jwt_user === 'string' || !jwt_user.id) {
         return NextResponse.json({ error: "Invalid JWT" }, { status: 500 });
       }
+
+
       let team_id_arry:number[] =  jwt_user.team_id_arry ;
       if (!team_id_arry) 
         team_id_arry = [invite_jwt?.team_id]; 
@@ -48,6 +50,7 @@ export async function POST(req: NextRequest){
         id : jwt_user.id,
         team_id_arry : jwt_user.team_id_arry
       });
+      
       const res = NextResponse.json({ "message": "done succsefuly" ,"team_id": invite_jwt.team_id , "team_name":data.team_name }, { status: 201 });
       res.cookies.set("jwt", newJwt || "", { path: "/" , maxAge : 60 * 60 * 24 * 365 * 20});
     return res
