@@ -2,10 +2,10 @@ import { createInviteJwt, decodeJWT } from "@/lib/createJwt";
 import { JwtPayload } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
 
 try{
-
+    const req_body = await req.json();
     const jwt = req.cookies.get("jwt");
     const jwt_value = jwt?.value;
     if (!jwt_value) {
@@ -25,8 +25,10 @@ try{
     if (!jwt_user || typeof jwt_user === 'string' || !jwt_user.id) {
         return NextResponse.json({ error: "Invalid JWT" }, { status: 500 });
       }
+    console.log(jwt_user)
+    console.log("team_id",req_body.team_id)
     const invite:invite_jwt = {
-        "team_id": jwt_user.team_id,
+        "team_id": req_body.team_id,
         "invitor_id":jwt_user.id,
         expiration_date: expiration_date_str,
     };
