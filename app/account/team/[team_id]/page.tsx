@@ -14,7 +14,7 @@ export default async function Page({
     const cookieStore = await cookies();
     const jwt = cookieStore.get("jwt")?.value;
     // check if there is no jwt 
-    const jwt_user = decodeJWT(jwt||""); 
+    //const jwt_user = decodeJWT(jwt||""); 
 
     return (
         <>
