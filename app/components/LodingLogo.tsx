@@ -1,33 +1,38 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const LoadingLogo: React.FC = () => {
   const originalText = "TaskFlow";
-  const [rotation, setRotation] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRotation((prev) => prev + 360); // زيادة الزاوية للدوران
-    }, 2000); // كل ثانيتين
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
+      {/* إضافة الـ CSS animations هنا */}
+      <style>
+        {`
+          @keyframes rotate-with-pause {
+            0%, 40% {
+              transform: rotate(0deg);
+            }
+            60%, 100% {
+              transform: rotate(360deg);
+            }
+          }
+
+          .animate-rotate-with-pause {
+            animation: rotate-with-pause 2s linear infinite;
+          }
+        `}
+      </style>
+
+      {/* المكون الرئيسي */}
       <div className="relative">
+        {/* الجزء الأول: الأسطوانة (الدائرة) */}
         <div
-          className="absolute inset-0 rounded-full border-4 border-purple-700 opacity-50"
-          style={{
-            transform: `rotate(${rotation}deg)`,
-            transition: "transform 2s ease-in-out",
-            animation: "fadeOut 2s forwards",
-          }}
+          className="absolute inset-0 rounded-full border-4 border-purple-700 opacity-50 animate-rotate-with-pause"
         />
-        <div
-          className="flex transform transition-transform duration-1000"
-          style={{ transform: `rotate(${rotation}deg)` }}
-        >
+
+        {/* الجزء الثاني: النص */}
+        <div className="flex animate-rotate-with-pause">
           {originalText.split("").map((char, index) => (
             <span
               key={index}
