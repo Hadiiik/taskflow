@@ -13,7 +13,7 @@ const page = () => {
       <ProblemsSection/>
       <FeaturesSection/>
       <Footer/>
-      
+
     </>
   )
 }
