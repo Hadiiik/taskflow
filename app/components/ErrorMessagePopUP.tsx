@@ -15,7 +15,7 @@ const ErrorMessagePopUP: React.FC<ErrorMessagePopUPProps> = ({ message, onClose 
                     onClick={onClose}
                     className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-500 transition duration-200"
                 >
-                    قبول
+                    حسناً
                 </button>
             </div>
         </div>
