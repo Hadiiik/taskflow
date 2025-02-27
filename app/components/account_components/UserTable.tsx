@@ -38,10 +38,11 @@ const UserTable: React.FC<UserTableProps> = ({  team_id }) => {
   },[])
 
   const handleDelete = (id: number|string) => {
+    console.log(id)
   };
 
    const handleOptionChange = (id:number|string) =>{
-
+    console.log(id)
    }
 
   const totalPages = Math.ceil(userList.length / ITEMS_PER_PAGE);
@@ -73,7 +74,7 @@ const UserTable: React.FC<UserTableProps> = ({  team_id }) => {
             </tr>
           </thead>
           <tbody>
-            {paginatedUsers.map((user,i) => (
+            {paginatedUsers.map((user) => (
               <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors duration-200">
                 <td className="py-2 px-4">{user.name}</td>
                 <td className="py-2 px-4">
