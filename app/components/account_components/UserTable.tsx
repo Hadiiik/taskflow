@@ -1,29 +1,48 @@
 "use client"
-import React, { useState } from "react";
+import { getTeamMembers } from "@/client_helpers/getTeamMembers";
+import React, { useEffect, useState } from "react";
 
 type User = {
   id: number;
   name: string;
-  role: string;
-  position: string;
+  user_role: string;
+  user_position: string;
 };
-
+  
 type UserTableProps = {
-  users: User[];
+  team_id: string|number
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 3;
 
-const UserTable: React.FC<UserTableProps> = ({ users }) => {
-  const [userList, setUserList] = useState(users);
+const UserTable: React.FC<UserTableProps> = ({  team_id }) => {
+  const [userList, setUserList] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteUser, setDeleteUser] = useState<User | null>(null);
   const [fade, setFade] = useState(false);
 
-  const handleDelete = (id: number) => {
-    setUserList(userList.filter((user) => user.id !== id));
-    setDeleteUser(null);
+
+  useEffect(()=>{
+    const fetchTeamdata = async (team_id:number|string) =>{
+      const result = await getTeamMembers(team_id);
+      if(!result.success)
+        //show error
+      return
+      console.log(result.members)
+      const members = result.members;
+      setUserList(members)
+      console.log(members)
+
+    };
+    fetchTeamdata(team_id)
+  },[])
+
+  const handleDelete = (id: number|string) => {
   };
+
+   const handleOptionChange = (id:number|string) =>{
+
+   }
 
   const totalPages = Math.ceil(userList.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -38,7 +57,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-8">
+    <div className="max-w-3xl mx-auto mt-8 px-7" dir="rtl">
       <div className="bg-purple-600 text-white text-lg font-semibold py-3 px-4 rounded-t-md">
         أعضاء الفريق
       </div>
@@ -54,18 +73,18 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
             </tr>
           </thead>
           <tbody>
-            {paginatedUsers.map((user) => (
-              <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors duration-200">
+            {paginatedUsers.map((user,i) => (
+              <tr key={i} className="border-b hover:bg-gray-50 transition-colors duration-200">
                 <td className="py-2 px-4">{user.name}</td>
                 <td className="py-2 px-4">
                   <input
                     type="text"
-                    defaultValue={user.role}
+                    defaultValue={user.user_position}
                     className="border border-gray-300 rounded-md px-3 py-1 w-full focus:ring-purple-500 focus:border-purple-500"
                   />
                 </td>
                 <td className="py-2 px-4">
-                  <select className="border rounded-md px-3 py-1 w-full focus:ring-purple-500 focus:border-purple-500">
+                  <select className="border rounded-md px-3 py-1 w-full focus:ring-purple-500 focus:border-purple-500" onChange={()=>handleOptionChange(1)} >
                     <option>مدير</option>
                     <option>مساعد</option>
                     <option>مساهم</option>
@@ -86,11 +105,11 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center mt-4 space-x-2">
+        <div className="flex justify-center mt-4 space-x-2" >
           <button
             onClick={() => changePage(-1)}
             disabled={currentPage === 1}
-            className="px-3 py-1 border rounded-md bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition"
+            className="px-3  py-1 border rounded-md bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition"
           >
             السابق
           </button>
@@ -106,7 +125,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
       )}
 
       {deleteUser && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50" >
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm">
             <p className="text-lg font-semibold text-gray-800">
               هل أنت متأكد من أنك تريد حذف <span className="text-purple-600">{deleteUser.name}</span> من جدول الأعضاء؟
@@ -114,7 +133,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
             <div className="mt-4 flex justify-end space-x-2">
               <button
                 onClick={() => setDeleteUser(null)}
-                className="px-4 py-2 border rounded-md bg-gray-100 hover:bg-gray-200 transition"
+                className="px-4 mx-4 py-2 border rounded-md bg-gray-100 hover:bg-gray-200 transition"
               >
                 إلغاء
               </button>

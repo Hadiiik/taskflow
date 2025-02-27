@@ -21,7 +21,8 @@ export async function POST(req: NextRequest){
         .eq('creator_id', invite_jwt.invitor_id)
         .eq('disabled', false)
         .single(); // تأكد من أننا نأخذ سطر واحد فقط
-        console.log("data: ", data)   
+        console.log("data: ", data)  
+        console.log("error", error) 
     if (error || !data) {
         return NextResponse.json({ error: "Invalid invitation" }, { status: 400 });
     }  
@@ -41,7 +42,8 @@ export async function POST(req: NextRequest){
       let team_id_arry:number[] =  jwt_user.team_id_arry ;
       if (!team_id_arry) 
         team_id_arry = [invite_jwt?.team_id]; 
-      else team_id_arry.push(invite_jwt?.team_id);
+      else  
+        team_id_arry.push(invite_jwt?.team_id);
       jwt_user.team_id_arry = team_id_arry;
 
       const newJwt = createJwt({
@@ -50,6 +52,18 @@ export async function POST(req: NextRequest){
         id : jwt_user.id,
         team_id_arry : jwt_user.team_id_arry
       });
+
+
+      //add user to members table 
+      const {data:d,error:e} = await supabase
+                              .from("members")
+                              .insert({
+                                "team_id":invite_jwt?.team_id,
+                                "user_role" : "user",
+                                "user_id" : jwt_user?.id
+
+                              });
+      console.log(d,e)                        
       
       const res = NextResponse.json({ "message": "done succsefuly" ,"team_id": invite_jwt.team_id , "team_name":data.team_name }, { status: 201 });
       res.cookies.set("jwt", newJwt || "", { path: "/" , maxAge : 60 * 60 * 24 * 365 * 20});

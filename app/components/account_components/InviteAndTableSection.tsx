@@ -36,7 +36,7 @@ const FloatingButtonsSection = ({ props }: { props: { team_id: string | number }
     {
       invitPopupVible && <PopUpCallLink invitationLink={invitationLink} onClose={()=>setInvitPopupVible(false)}/>
     }
-    <div className='absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-6'>
+    <div className=' bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-6 absolute'>
       {/* زر إنشاء دعوة */}
       <button
         onClick={() => getInvite(props.team_id)}
