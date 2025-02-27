@@ -4,15 +4,16 @@ import React, { useState, useEffect } from 'react';
 
 interface PopUpCallLinkProps {
   invitationLink: string;
+  onClose: ()=> void
 }
 
-const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink }) => {
+const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink ,onClose}) => {
   const [isCopied, setIsCopied] = useState(false);
   const [isVisible, setIsVisible] = useState(true); // حالة لإظهار أو إخفاء النافذة
   const [isShrinking, setIsShrinking] = useState(false); // حالة للانضغاط
 
   // تقصير الرابط إذا كان طويلاً
-  const truncateLink = (link: string, maxLength: number = 30) => {
+  const truncateLink = (link: string, maxLength: number = 70) => {
     return link.length > maxLength ? link.substring(0, maxLength) + "..." : link;
   };
 
@@ -23,12 +24,13 @@ const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink }) => {
       // بدء الانضغاط بعد 2 ثانية
       setTimeout(() => {
         setIsShrinking(true); // بدء الانضغاط
-      }, 2000);
+      }, 700);
 
       // إخفاء النافذة بعد انتهاء الانضغاط
       setTimeout(() => {
-        setIsVisible(false); // إخفاء النافذة
-      }, 2500); // 2000 للانتظار + 500 للانضغاط
+        setIsVisible(false);
+        onClose() // إخفاء النافذة
+      }, 1000); // 2000 للانتظار + 500 للانضغاط
     });
   };
 
@@ -56,10 +58,10 @@ const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink }) => {
   return (
     <>
       {/* طبقة لمنع التفاعل مع الصفحة */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 "></div>
 
       {/* النافذة المنبثقة */}
-      <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="fixed inset-0 flex items-center justify-center z-50 mx-5">
         <div
           className={`popup-container bg-white rounded-lg shadow-lg w-96 transition-transform duration-500 ${
             isShrinking ? 'scale-0' : 'scale-100'
