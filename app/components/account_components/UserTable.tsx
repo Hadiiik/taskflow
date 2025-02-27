@@ -74,7 +74,7 @@ const UserTable: React.FC<UserTableProps> = ({  team_id }) => {
           </thead>
           <tbody>
             {paginatedUsers.map((user,i) => (
-              <tr key={i} className="border-b hover:bg-gray-50 transition-colors duration-200">
+              <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors duration-200">
                 <td className="py-2 px-4">{user.name}</td>
                 <td className="py-2 px-4">
                   <input
