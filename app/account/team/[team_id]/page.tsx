@@ -3,7 +3,6 @@ import InviteAndTableSection from '@/app/components/account_components/InviteAnd
 import Card from '@/app/components/HorizntiolCard';
 import { decodeJWT } from '@/lib/createJwt';
 import { cookies } from 'next/headers'
-import Link from 'next/link';
 
 export default async function Page({
     params,
