@@ -45,7 +45,7 @@ const AccountHeader: React.FC = () => {
       </header>
 
       {/* قائمة الهاتف - تظهر فقط في وضع الهاتف */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-violet-600 to-violet-800 text-white flex justify-around items-center py-2">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-violet-50 text-violet-800 shadow-xl flex justify-around items-center py-2">
         {accounts.map((account) => (
           <Link
             key={account.name}

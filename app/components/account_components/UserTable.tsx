@@ -53,8 +53,8 @@ const UserTable: React.FC<UserTableProps> = ({ team_id }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-8 px-7" dir="rtl">
-      <div className="bg-purple-600 text-white text-lg font-semibold py-3 px-4 rounded-t-md">
+    <div className="max-w-3xl mx-auto md:mt-8 mt-8 px-7 mb-28" dir="rtl">
+      <div className="bg-purple-600 text-white text-lg font-semibold py-3 px-4 rounded-t-md mb-4">
         أعضاء الفريق
       </div>
 
@@ -71,8 +71,8 @@ const UserTable: React.FC<UserTableProps> = ({ team_id }) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedUsers.map((user) => (
-                <tr key={user.id} className="border-b hover:bg-gray-50 transition-colors duration-200">
+              {paginatedUsers.map((user,i) => (
+                <tr key={i} className="border-b hover:bg-gray-50 transition-colors duration-200">
                   <td className="py-2 px-4">{user.name}</td>
                   <td className="py-2 px-4">
                     <input
@@ -106,9 +106,9 @@ const UserTable: React.FC<UserTableProps> = ({ team_id }) => {
         </div>
 
         {/* عرض المستطيلات على الشاشات الصغيرة */}
-        <div className="md:hidden space-y-4">
-          {paginatedUsers.map((user) => (
-            <div key={user.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
+        <div className="md:hidden space-y-4 ">
+          {paginatedUsers.map((user,i) => (
+            <div key={i} className="bg-gray-100 p-4 rounded-lg shadow-md">
               <div className="flex justify-between pb-2">
                 <span className="font-semibold text-gray-700">الاسم:</span>
                 <span>{user.name}</span>
