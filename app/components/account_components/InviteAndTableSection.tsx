@@ -28,63 +28,145 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
 
   return (
     <>
-    {
-      invitPopupVible && <PopUpCallLink invitationLink={invitationLink} onClose={()=>setInvitPopupVible(false)}/>
-    }
-    <div className='absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-6'>
-      {/* زر إنشاء دعوة */}
+      {invitPopupVisible && (
+        <PopUpCallLink 
+          invitationLink={invitationLink} 
+          onClose={() => setInvitPopupVisible(false)}
+        />
+      )}
+
+      {/* زر رئيسي للوضعين */}
       <button
-        onClick={() => getInvite(props.team_id)}
-        className='flex items-center justify-center bg-violet-600 text-white rounded-full p-4 shadow-lg hover:bg-violet-500 transition-all duration-300 ease-in-out transform hover:scale-110'
+        onClick={toggleMenu}
+        className={`fixed z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 
+        flex items-center justify-center text-white shadow-lg transition-all duration-300
+        hover:from-purple-600 hover:to-purple-800 md:left-1/2 md:-translate-x-1/2 md:bottom-6
+        ${isOpen ? 'md:-translate-y-16 rotate-45' : 'rotate-0'} top-4 right-4 md:top-auto md:right-auto`}
       >
-        <p className='text-sm'>دعوة الأعضاء</p>
-        <Image src='/join-team.svg' alt='إنشاء دعوة' width={30} height={30} />
+        <div className="w-5 h-5 md:w-6 md:h-6 relative">
+          <div className="absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 rounded-full"></div>
+          <div className="absolute h-full w-1 bg-white left-1/2 -translate-x-1/2 rounded-full"></div>
+        </div>
       </button>
 
-        {/* الأزرار الفرعية */}
-        <div className={`fixed left-1/2 -translate-x-1/2 bottom-6 flex space-x-2 md:space-x-6 transition-all duration-300 ${isOpen ? 'md:bottom-[6rem]' : ''}`}>
+      {/* الأزرار الفرعية للوضع اللابتوب */}
+      <div className="hidden md:flex fixed left-1/2 -translate-x-1/2 bottom-6 space-x-6 transition-all duration-300">
+        {/* زر إنشاء جدول */}
+        <button
+          className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
+          text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
+          transition-all duration-300 ${
+            isOpen
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-[100px]'
+          }`}
+        >
+          <span className="text-base">انشاء جدول</span>
+          <Image 
+            src='/create-team.svg' 
+            alt='إنشاء جدول' 
+            width={30} 
+            height={30}
+            className="w-6 h-6"
+          />
+        </button>
+
+        {/* زر دعوة أعضاء */}
+        <button
+          onClick={() => getInvite(team_id)}
+          className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
+          text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
+          transition-all duration-300 ${
+            isOpen
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-[100px]'
+          }`}
+        >
+          <span className="text-base">دعوة اعضاء</span>
+          <Image 
+            src='/join-team.svg' 
+            alt='دعوة أعضاء' 
+            width={30} 
+            height={30}
+            className="w-6 h-6"
+          />
+        </button>
+
+        {/* زر عرض جدول الأعضاء */}
+        <button
+          className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
+          text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
+          transition-all duration-300 ${
+            isOpen
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-[100px]'
+          }`}
+        >
+          <span className="text-base">عرض جدول الأعضاء</span>
+          <div className="w-6 h-6 relative">
+            <div className="absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 rounded-full"></div>
+            <div className="absolute h-full w-1 bg-white left-1/2 -translate-x-1/2 rounded-full"></div>
+            <div className="absolute w-2 h-2 bg-white top-1/4 left-1/4 rounded-full"></div>
+            <div className="absolute w-2 h-2 bg-white top-1/4 right-1/4 rounded-full"></div>
+            <div className="absolute w-2 h-2 bg-white bottom-1/4 left-1/4 rounded-full"></div>
+            <div className="absolute w-2 h-2 bg-white bottom-1/4 right-1/4 rounded-full"></div>
+          </div>
+        </button>
+      </div>
+
+      {/* القائمة المنبثقة للوضع الهاتف */}
+      {isOpen && (
+        <div className="md:hidden fixed top-16 right-4 z-50 bg-white rounded-lg shadow-lg w-48 overflow-hidden">
+          {/* رأس القائمة */}
+          <div className="bg-gradient-to-r from-purple-500 to-purple-700 text-white text-center py-2">
+            <span className="text-sm">صلاحيات المدير</span>
+          </div>
+
           {/* زر إنشاء جدول */}
           <button
-            className={`md:w-44 md:h-12 w-32 h-10 bg-gradient-to-r from-purple-500 to-purple-700 
-            text-white rounded-lg flex items-center justify-center md:space-x-3 space-x-1 shadow-lg
-            transition-all duration-300 ${
-              isOpen
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-[100px]'
-            }`}
+            className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
-            <span className="md:text-base text-sm">انشاء جدول</span>
             <Image 
               src='/create-team.svg' 
               alt='إنشاء جدول' 
-              width={30} 
-              height={30}
-              className="w-5 h-5 md:w-6 md:h-6"
+              width={20} 
+              height={20}
+              className="w-5 h-5"
             />
+            <span>انشاء جدول</span>
           </button>
 
           {/* زر دعوة أعضاء */}
           <button
             onClick={() => getInvite(team_id)}
-            className={`md:w-44 md:h-12 w-32 h-10 bg-gradient-to-r from-purple-500 to-purple-700 
-            text-white rounded-lg flex items-center justify-center md:space-x-3 space-x-1 shadow-lg
-            transition-all duration-300 ${
-              isOpen
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-[100px]'
-            }`}
+            className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
-            <span className="md:text-base text-sm">دعوة اعضاء</span>
             <Image 
               src='/join-team.svg' 
               alt='دعوة أعضاء' 
-              width={30} 
-              height={30}
-              className="w-5 h-5 md:w-6 md:h-6"
+              width={20} 
+              height={20}
+              className="w-5 h-5"
             />
+            <span>دعوة اعضاء</span>
+          </button>
+
+          {/* زر عرض جدول الأعضاء */}
+          <button
+            className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
+          >
+            <div className="w-5 h-5 relative">
+              <div className="absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 rounded-full"></div>
+              <div className="absolute h-full w-1 bg-white left-1/2 -translate-x-1/2 rounded-full"></div>
+              <div className="absolute w-2 h-2 bg-white top-1/4 left-1/4 rounded-full"></div>
+              <div className="absolute w-2 h-2 bg-white top-1/4 right-1/4 rounded-full"></div>
+              <div className="absolute w-2 h-2 bg-white bottom-1/4 left-1/4 rounded-full"></div>
+              <div className="absolute w-2 h-2 bg-white bottom-1/4 right-1/4 rounded-full"></div>
+            </div>
+            <span>عرض جدول الأعضاء</span>
           </button>
         </div>
-      </div>
+      )}
     </>
   );
 };
