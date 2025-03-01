@@ -7,7 +7,7 @@ interface MissionSchedule {
 }
 
 interface MissionSchedulesProps {
-  schedules: MissionSchedule[];
+  schedules: MissionSchedule[]|[]|null;
 }
 
 const MissionSchedules: React.FC<MissionSchedulesProps> = ({ schedules }) => {

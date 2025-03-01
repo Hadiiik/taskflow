@@ -1,5 +1,6 @@
 import AccountHeader from '@/app/components/account_components/AccountHeader';
 import InviteAndTableSection from '@/app/components/account_components/InviteAndTableSection';
+import MissionSchedules from '@/app/components/account_components/MissionSchedules';
 import Card from '@/app/components/HorizntiolCard';
 import { decodeJWT } from '@/lib/createJwt';
 import { cookies } from 'next/headers'
@@ -23,7 +24,7 @@ export default async function Page({
         <AccountHeader/>
         {/* if admin  */}
         <div className='lg:my-2 my-20'>
-        <Card title={'جدول الأعضاء'} details={'hdkkdkdlldjfjjfjkdk'} herf={`/account/team/${team_id}/users-table?team_id=${team_id}`}/>
+        <MissionSchedules schedules={null}/>
         </div>
         <InviteAndTableSection team_id={team_id}/>
         {/* if admin  */}
