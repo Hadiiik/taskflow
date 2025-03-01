@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { accsepetInvite } from '@/client_helpers/accsepet_invite';
 import PopUpCallLink from '../PopUpCallLink';
 import Image from 'next/image';
+import Link from 'next/link';
+import createTable from '@/client_helpers/create_table';
 
 const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +27,17 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
       setInvitPopupVisible(true);
     }
   };
+
+
+
+  const handleCraeteTble = async (team_id:number|string)=>{
+    const res = await createTable({
+      "table_name":"تجربة",
+      "team_id":team_id,
+      "coulmns_array":["1","2","3"]
+    });
+    console.log(res)
+  }
 
   return (
     <>
@@ -52,7 +65,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
       {/* الأزرار الفرعية للوضع اللابتوب */}
       <div className="hidden md:flex fixed left-1/2 -translate-x-1/2 bottom-6 space-x-6 transition-all duration-300">
         {/* زر إنشاء جدول */}
-        <button
+        <button onClick={()=>handleCraeteTble(team_id)}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -93,7 +106,8 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         </button>
 
         {/* زر عرض جدول الأعضاء */}
-        <button
+        <Link
+          href={`/account/team/${team_id}/users-table?team_id=${team_id}`}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -111,7 +125,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
             <div className="absolute w-2 h-2 bg-white bottom-1/4 left-1/4 rounded-full"></div>
             <div className="absolute w-2 h-2 bg-white bottom-1/4 right-1/4 rounded-full"></div>
           </div>
-        </button>
+        </Link>
       </div>
 
       {/* القائمة المنبثقة للوضع الهاتف */}
@@ -123,7 +137,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
           </div>
 
           {/* زر إنشاء جدول */}
-          <button
+          <button onClick={()=>handleCraeteTble(team_id)}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <Image 
@@ -152,7 +166,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
           </button>
 
           {/* زر عرض جدول الأعضاء */}
-          <button
+          <Link href={`/account/team/${team_id}/users-table?team_id=${team_id}`}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <div className="w-5 h-5 relative">
@@ -164,7 +178,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
               <div className="absolute w-2 h-2 bg-white bottom-1/4 right-1/4 rounded-full"></div>
             </div>
             <span>عرض جدول الأعضاء</span>
-          </button>
+          </Link>
         </div>
       )}
     </>
