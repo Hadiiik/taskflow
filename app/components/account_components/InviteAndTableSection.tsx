@@ -28,27 +28,18 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
 
   return (
     <>
-      {invitPopupVisible && (
-        <PopUpCallLink 
-          invitationLink={invitationLink} 
-          onClose={() => setInvitPopupVisible(false)}
-        />
-      )}
-
-      <div className="fixed md:left-1/2 md:-translate-x-1/2 bottom-6 left-6 z-50">
-        {/* الزر الرئيسي */}
-        <button
-          onClick={toggleMenu}
-          className={`w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 
-          flex items-center justify-center text-white shadow-lg transition-all duration-300
-          hover:from-purple-600 hover:to-purple-800 md:mx-auto
-          ${isOpen ? 'md:-translate-y-16 rotate-45' : 'rotate-0'}`}
-        >
-          <div className="w-5 h-5 md:w-6 md:h-6 relative">
-            <div className="absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 rounded-full"></div>
-            <div className="absolute h-full w-1 bg-white left-1/2 -translate-x-1/2 rounded-full"></div>
-          </div>
-        </button>
+    {
+      invitPopupVible && <PopUpCallLink invitationLink={invitationLink} onClose={()=>setInvitPopupVible(false)}/>
+    }
+    <div className='absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-6'>
+      {/* زر إنشاء دعوة */}
+      <button
+        onClick={() => getInvite(props.team_id)}
+        className='flex items-center justify-center bg-violet-600 text-white rounded-full p-4 shadow-lg hover:bg-violet-500 transition-all duration-300 ease-in-out transform hover:scale-110'
+      >
+        <p className='text-sm'>دعوة الأعضاء</p>
+        <Image src='/join-team.svg' alt='إنشاء دعوة' width={30} height={30} />
+      </button>
 
         {/* الأزرار الفرعية */}
         <div className={`fixed left-1/2 -translate-x-1/2 bottom-6 flex space-x-2 md:space-x-6 transition-all duration-300 ${isOpen ? 'md:bottom-[6rem]' : ''}`}>
