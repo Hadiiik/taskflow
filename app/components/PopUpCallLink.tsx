@@ -4,15 +4,14 @@ import React, { useState, useEffect } from 'react';
 
 interface PopUpCallLinkProps {
   invitationLink: string;
-  onClose: ()=> void
+  onClose: () => void;
 }
 
-const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink ,onClose}) => {
+const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink, onClose }) => {
   const [isCopied, setIsCopied] = useState(false);
-  const [isVisible, setIsVisible] = useState(true); // حالة لإظهار أو إخفاء النافذة
-  const [isShrinking, setIsShrinking] = useState(false); // حالة للانضغاط
+  const [isVisible, setIsVisible] = useState(true);
+  const [isShrinking, setIsShrinking] = useState(false);
 
-  // تقصير الرابط إذا كان طويلاً
   const truncateLink = (link: string, maxLength: number = 70) => {
     return link.length > maxLength ? link.substring(0, maxLength) + "..." : link;
   };
@@ -21,20 +20,17 @@ const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink ,onClose})
     navigator.clipboard.writeText(invitationLink).then(() => {
       setIsCopied(true);
 
-      // بدء الانضغاط بعد 2 ثانية
       setTimeout(() => {
-        setIsShrinking(true); // بدء الانضغاط
+        setIsShrinking(true);
       }, 700);
 
-      // إخفاء النافذة بعد انتهاء الانضغاط
       setTimeout(() => {
         setIsVisible(false);
-        onClose() // إخفاء النافذة
-      }, 1000); // 2000 للانتظار + 500 للانضغاط
+        onClose();
+      }, 1000);
     });
   };
 
-  // إغلاق النافذة عند النقر خارجها
   const handleClickOutside = (event: MouseEvent) => {
     const popup = document.querySelector('.popup-container');
     if (popup && !popup.contains(event.target as Node)) {
@@ -42,7 +38,6 @@ const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink ,onClose})
     }
   };
 
-  // إضافة مستمع حدث عند تحميل المكون
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -50,7 +45,6 @@ const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink ,onClose})
     };
   }, []);
 
-  // إذا لم تعد النافذة مرئية، لا نعيد عرض أي شيء
   if (!isVisible) {
     return null;
   }
@@ -58,36 +52,36 @@ const PopUpCallLink: React.FC<PopUpCallLinkProps> = ({ invitationLink ,onClose})
   return (
     <>
       {/* طبقة لمنع التفاعل مع الصفحة */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 "></div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50"></div>
 
       {/* النافذة المنبثقة */}
       <div className="fixed inset-0 flex items-center justify-center z-50 mx-5">
         <div
-          className={`popup-container bg-white rounded-lg shadow-lg w-96 transition-transform duration-500 ${
+          className={`popup-container bg-white rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md transition-transform duration-500 ${
             isShrinking ? 'scale-0' : 'scale-100'
           }`}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-700 to-purple-700 rounded-t-lg p-4">
-            <h2 className="text-white text-lg font-semibold">رابط الدعوة :</h2>
+          <div className="bg-gradient-to-r from-purple-700 to-purple-700 rounded-t-lg p-3 sm:p-4">
+            <h2 className="text-white text-sm sm:text-lg font-semibold">رابط الدعوة :</h2>
           </div>
 
           {/* Body */}
-          <div className="p-4">
-            <p className="text-gray-500 break-words">
+          <div className="p-3 sm:p-4">
+            <p className="text-gray-500 break-words text-sm sm:text-base">
               {truncateLink(invitationLink)}
             </p>
           </div>
 
           {/* Footer */}
-          <div className="p-4 flex justify-end">
+          <div className="p-3 sm:p-4 flex justify-end">
             <button
               onClick={handleCopyLink}
               className={`${
                 isCopied
-                  ? 'bg-gradient-to-r from-green-500 to-green-700' // لون أخضر عند النسخ
-                  : 'bg-gradient-to-r from-purple-500 to-purple-700' // لون بنفسجي افتراضي
-              } text-white px-4 py-2 rounded-lg transition-all`}
+                  ? 'bg-gradient-to-r from-green-500 to-green-700'
+                  : 'bg-gradient-to-r from-purple-500 to-purple-700'
+              } text-white px-3 py-1 sm:px-4 sm:py-2 rounded-lg transition-all text-sm sm:text-base`}
             >
               {isCopied ? 'تم النسخ!' : 'نسخ الرابط'}
             </button>

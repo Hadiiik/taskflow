@@ -1,19 +1,22 @@
-// InviteAndTableSection.tsx
 "use client";
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { accsepetInvite } from '@/client_helpers/accsepet_invite';
 import PopUpCallLink from '../PopUpCallLink';
+import PopUpCreateTable from './PopUpCreateTable'; // استيراد المكون الجديد
 import Image from 'next/image';
 import Link from 'next/link';
-import createTable from '@/client_helpers/create_table';
 
 const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [invitPopupVisible, setInvitPopupVisible] = useState(false);
   const [invitationLink, setInvitationLink] = useState("");
+  const [showCreateTablePopup, setShowCreateTablePopup] = useState(false); // حالة لإدارة نافذة إنشاء الجدول
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null); // مرجع للزر الرئيسي
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(prev => !prev); // عكس الحالة الحالية للقائمة
   };
 
   const getInvite = async (team_id: string | number) => {
@@ -26,18 +29,28 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
       setInvitationLink(inviteLink);
       setInvitPopupVisible(true);
     }
+
+    setIsOpen(false); // إغلاق القائمة بعد الحصول على الدعوة
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(event.target as Node) && 
+        buttonRef.current && 
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false); // إغلاق القائمة عند التفاعل مع الصفحة
+      }
+    };
 
+    document.addEventListener('mousedown', handleClickOutside);
 
-  const handleCraeteTble = async (team_id:number|string)=>{
-    const res = await createTable({
-      "table_name":"تجربة",
-      "team_id":team_id,
-      "coulmns_array":["1","2","3"]
-    });
-    console.log(res)
-  }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -48,8 +61,15 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         />
       )}
 
-      {/* زر رئيسي للوضعين */}
+      {showCreateTablePopup && (
+        <PopUpCreateTable 
+          isSubscription={false} // عرض نافذة إنشاء الجدول
+          onClose={() => setShowCreateTablePopup(false)} // إغلاق النافذة
+        />
+      )}
+
       <button
+        ref={buttonRef} // إضافة المرجع للزر
         onClick={toggleMenu}
         className={`fixed z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 
         flex items-center justify-center text-white shadow-lg transition-all duration-300
@@ -62,10 +82,12 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         </div>
       </button>
 
-      {/* الأزرار الفرعية للوضع اللابتوب */}
       <div className="hidden md:flex fixed left-1/2 -translate-x-1/2 bottom-6 space-x-6 transition-all duration-300">
-        {/* زر إنشاء جدول */}
-        <button onClick={()=>handleCraeteTble(team_id)}
+        <button
+          onClick={() => {
+            setIsOpen(false); // إغلاق القائمة المنسدلة
+            setShowCreateTablePopup(true); // فتح نافذة إنشاء الجدول
+          }}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -83,10 +105,12 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
             className="w-6 h-6"
           />
         </button>
-
-        {/* زر دعوة أعضاء */}
+        
         <button
-          onClick={() => getInvite(team_id)}
+          onClick={() => {
+            getInvite(team_id);
+            setIsOpen(false); // إغلاق القائمة عند الضغط على زر دعوة الأعضاء
+          }}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -105,9 +129,8 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
           />
         </button>
 
-        {/* زر عرض جدول الأعضاء */}
         <Link
-          href={`/account/team/${team_id}/users-table?team_id=${team_id}`}
+          href="/members-table"
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -128,16 +151,20 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         </Link>
       </div>
 
-      {/* القائمة المنبثقة للوضع الهاتف */}
       {isOpen && (
-        <div className="md:hidden fixed top-16 right-4 z-50 bg-white rounded-lg shadow-lg w-48 overflow-hidden">
-          {/* رأس القائمة */}
+        <div
+          ref={menuRef}
+          className="md:hidden fixed top-16 right-4 z-50 bg-white rounded-lg shadow-lg w-48 overflow-hidden"
+        >
           <div className="bg-gradient-to-r from-purple-500 to-purple-700 text-white text-center py-2">
             <span className="text-sm">صلاحيات المدير</span>
           </div>
 
-          {/* زر إنشاء جدول */}
-          <button onClick={()=>handleCraeteTble(team_id)}
+          <button
+            onClick={() => {
+              setIsOpen(false); // إغلاق القائمة المنسدلة
+              setShowCreateTablePopup(true); // فتح نافذة إنشاء الجدول
+            }}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <Image 
@@ -150,9 +177,11 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
             <span>انشاء جدول</span>
           </button>
 
-          {/* زر دعوة أعضاء */}
           <button
-            onClick={() => getInvite(team_id)}
+            onClick={() => {
+              getInvite(team_id);
+              setIsOpen(false); // إغلاق القائمة عند الضغط على زر دعوة الأعضاء
+            }}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <Image 
@@ -165,8 +194,8 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
             <span>دعوة اعضاء</span>
           </button>
 
-          {/* زر عرض جدول الأعضاء */}
-          <Link href={`/account/team/${team_id}/users-table?team_id=${team_id}`}
+          <Link
+            href="/members-table"
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <div className="w-5 h-5 relative">
