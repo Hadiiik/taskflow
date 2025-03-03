@@ -1,15 +1,21 @@
 "use client";
+import createTable from "@/client_helpers/create_table";
 import React, { useState, useRef, useEffect } from "react";
+import LoadingMessage from "../LoadingMessage";
 
 interface PopUpCreateTableProps {
   isSubscription?: boolean; // باراميتر اختياري لتحديد نوع النافذة
   onClose: () => void; // دالة لإغلاق النافذة
+  team_id:number|string;
 }
 
-const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = false, onClose }) => {
+const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = false, onClose ,team_id }) => {
   const [columns, setColumns] = useState<{ id: number; name: string }[]>([]);
   const [showConfirm, setShowConfirm] = useState<number | null>(null);
+  const [tableName,setTableName] = useState("");
+  const [isLoading,setIsLoading] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
+  
 
   // إغلاق النافذة عند النقر خارجها
   useEffect(() => {
@@ -43,9 +49,27 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
     }));
   };
 
+
+  const handleCreateTable = async ()=>{
+    setIsLoading(true);
+    await createTable({
+      "table_name":tableName,
+      "team_id":team_id,
+      "coulmns_array": columns.map(c=>c.name)
+
+    });
+    setIsLoading(false);
+  }
+
+
   return (
+    <>
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div ref={popupRef} className="bg-white rounded-lg shadow-lg w-full max-w-sm p-5 relative">
+    {
+      isLoading&&
+      <LoadingMessage message={"جار انشاء الجدول"}/>
+    }
         <button
           onClick={onClose} // زر إغلاق النافذة
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
@@ -59,7 +83,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
 
         <div className="mt-3">
           <label className="block text-gray-700 font-medium text-sm">اسم الجدول</label>
-          <input
+          <input onChange={(e)=>setTableName(e.target.value)}
             type="text"
             className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-purple-600 text-sm"
             placeholder="أدخل اسم الجدول"
@@ -103,7 +127,12 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
           </button>
           <button
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-md text-sm"
-            onClick={onClose} // إغلاق النافذة عند النقر على زر إنشاء الجدول
+            onClick={async ()=>{
+              await handleCreateTable();
+              onClose();
+            }
+            }
+               // إغلاق النافذة عند النقر على زر إنشاء الجدول
           >
             إنشاء الجدول
           </button>
@@ -136,6 +165,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
         )}
       </div>
     </div>
+    </>
   );
 };
 

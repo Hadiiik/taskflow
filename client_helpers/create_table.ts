@@ -16,6 +16,7 @@ const createTable = async (tableData: table) => {
     const data = await response.json();
     
     // التحقق من حالة الاستجابة
+    console.log(response)
     if (response.ok) {
       return { success: true, message: 'Table created successfully!' };
     } else {

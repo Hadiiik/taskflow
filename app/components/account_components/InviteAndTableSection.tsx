@@ -62,7 +62,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
       )}
 
       {showCreateTablePopup && (
-        <PopUpCreateTable 
+        <PopUpCreateTable team_id={team_id}
           isSubscription={false} // عرض نافذة إنشاء الجدول
           onClose={() => setShowCreateTablePopup(false)} // إغلاق النافذة
         />
@@ -130,7 +130,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         </button>
 
         <Link
-          href="/members-table"
+          href={`/account/team/${team_id}/users-table?team_id=${team_id}`}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -195,7 +195,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
           </button>
 
           <Link
-            href="/members-table"
+            href={`/account/team/${team_id}/users-table?team_id=${team_id}`}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <div className="w-5 h-5 relative">

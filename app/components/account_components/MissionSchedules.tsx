@@ -3,7 +3,7 @@ import React from "react";
 
 interface MissionSchedule {
   id: number;
-  name: string;
+  table_name: string;
 }
 
 interface MissionSchedulesProps {
@@ -38,7 +38,7 @@ const MissionSchedules: React.FC<MissionSchedulesProps> = ({ schedules }) => {
               backgroundImage: "linear-gradient(to right, #8B5CF6, #6D28D9)",
             }}
           >
-            {schedule.name}
+            {schedule.table_name}
           </a>
         ))}
       </div>

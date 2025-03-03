@@ -24,6 +24,7 @@ export  async function POST(req:NextRequest){
                         .eq("team_id",table_team_id)
                         .eq("creator_id",admin_id)
                         .single()
+    console.log(error)
     if(!data||error){
         return NextResponse.json({ error: "Invalid JWT" }, { status: 500 });
     }
