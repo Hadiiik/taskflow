@@ -1,7 +1,6 @@
 import AccountHeader from '@/app/components/account_components/AccountHeader';
 import InviteAndTableSection from '@/app/components/account_components/InviteAndTableSection';
 import MissionSchedules from '@/app/components/account_components/MissionSchedules';
-import Card from '@/app/components/HorizntiolCard';
 import { decodeJWT } from '@/lib/createJwt';
 import { supabase } from '@/lib/supabase';
 import { cookies } from 'next/headers'
