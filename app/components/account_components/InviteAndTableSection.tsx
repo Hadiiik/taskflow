@@ -6,6 +6,7 @@ import PopUpCallLink from '../PopUpCallLink';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
 const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [invitPopupVisible, setInvitPopupVisible] = useState(false);
@@ -77,8 +78,11 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
 
 
       <div className="hidden md:flex fixed left-1/2 -translate-x-1/2 bottom-6 space-x-6 transition-all duration-300">
-        <Link
-          href="/create-table"
+        <button
+          onClick={() => {
+            setIsOpen(false); // إغلاق القائمة المنسدلة
+            
+          }}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
           transition-all duration-300 ${
@@ -95,7 +99,8 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
             height={30}
             className="w-6 h-6"
           />
-        </Link>
+        </button>
+        
         <button
           onClick={() => {
             getInvite(team_id);
@@ -151,8 +156,11 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
             <span className="text-sm">صلاحيات المدير</span>
           </div>
 
-          <Link
-            href="/create-table"
+          <button
+            onClick={() => {
+              setIsOpen(false); // إغلاق القائمة المنسدلة
+              
+            }}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
             <Image 
@@ -163,7 +171,8 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
               className="w-5 h-5"
             />
             <span>انشاء جدول</span>
-          </Link>
+          </button>
+
           <button
             onClick={() => {
               getInvite(team_id);
