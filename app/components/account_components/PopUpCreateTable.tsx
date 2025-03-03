@@ -31,8 +31,8 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
     setColumns([...columns, { id: newColumnId, name: "" }]);
   };
 
-  const removeColumn = (id: number) => {
-    setColumns(columns.filter((col) => col.id !== id));
+  const removeColumn = (index: number) => {
+    setColumns((prevColumns) => prevColumns.filter((_, idx) => idx !== index)); // حذف العمود باستخدام index
     setShowConfirm(null);
   };
 
@@ -69,7 +69,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
         <div className="mt-3 text-center font-bold text-purple-600 border-t-2 border-purple-600 pt-2 text-sm">أعمدة الجدول</div>
 
         <div className="max-h-48 overflow-y-auto mt-2 space-y-2">
-          {getReindexedColumns().map((column) => (
+          {getReindexedColumns().map((column, index) => (
             <div key={column.id} className="flex items-center gap-2 bg-gray-100 p-2 rounded-md">
               <span className="bg-purple-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs">{column.id}</span>
               <input
@@ -86,7 +86,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
               />
               <button
                 className="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md flex items-center gap-1 text-xs px-2"
-                onClick={() => setShowConfirm(column.id)}
+                onClick={() => setShowConfirm(index)} // تحديد الفهرس لحذف العمود
               >
                 حذف
               </button>
@@ -104,8 +104,6 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
           <button
             className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-md text-sm"
             onClick={onClose} // إغلاق النافذة عند النقر على زر إنشاء الجدول
-            //الهدهد الاحمر هون لازم تعطي اوامر بإنشاء الجدول بقاعدة البيانات
-            //ولازم بس يتأنشأ تستدعي المكون MissionSchedules
           >
             إنشاء الجدول
           </button>
@@ -126,7 +124,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
                   className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md text-xs"
                   onClick={() => {
                     if (showConfirm !== null) {
-                      removeColumn(showConfirm);
+                      removeColumn(showConfirm); // تمرير الـ index لحذف العمود
                     }
                   }}
                 >

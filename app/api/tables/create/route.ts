@@ -5,7 +5,6 @@ import { JwtPayload } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
 export  async function POST(req:NextRequest){
-    console.log("triggerded")
     //check if admin 
     const jwt = req.cookies.get("jwt");
     const jwt_value = jwt?.value;
