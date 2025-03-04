@@ -1,16 +1,16 @@
-
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import { accsepetInvite } from '@/client_helpers/accsepet_invite';
 import PopUpCallLink from '../PopUpCallLink';
+import PopUpCreateTable from './PopUpCreateTable'; // استيراد المكون الجديد
 import Image from 'next/image';
 import Link from 'next/link';
-
 
 const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [invitPopupVisible, setInvitPopupVisible] = useState(false);
   const [invitationLink, setInvitationLink] = useState("");
+  const [showCreateTablePopup, setShowCreateTablePopup] = useState(false); // حالة لإدارة نافذة إنشاء الجدول
 
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null); // مرجع للزر الرئيسي
@@ -61,6 +61,12 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         />
       )}
 
+      {showCreateTablePopup && (
+        <PopUpCreateTable 
+          isSubscription={false} // عرض نافذة إنشاء الجدول
+          onClose={() => setShowCreateTablePopup(false)} // إغلاق النافذة
+        />
+      )}
 
       <button
         ref={buttonRef} // إضافة المرجع للزر
@@ -76,12 +82,11 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         </div>
       </button>
 
-
       <div className="hidden md:flex fixed left-1/2 -translate-x-1/2 bottom-6 space-x-6 transition-all duration-300">
         <button
           onClick={() => {
             setIsOpen(false); // إغلاق القائمة المنسدلة
-            
+            setShowCreateTablePopup(true); // فتح نافذة إنشاء الجدول
           }}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
@@ -146,7 +151,6 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
         </Link>
       </div>
 
-
       {isOpen && (
         <div
           ref={menuRef}
@@ -159,7 +163,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
           <button
             onClick={() => {
               setIsOpen(false); // إغلاق القائمة المنسدلة
-              
+              setShowCreateTablePopup(true); // فتح نافذة إنشاء الجدول
             }}
             className="w-full py-3 px-4 text-sm text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 active:from-red-500 active:to-red-700 flex items-center space-x-2 transition-all duration-300"
           >
