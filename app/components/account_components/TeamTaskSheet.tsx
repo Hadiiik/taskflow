@@ -27,6 +27,7 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
 
   const handleDragStart = (taskIndex: number) => {
     setDraggingTaskIndex(taskIndex);
+    console.log(table_id)
   };
 
   const handleDrop = (columnIndex: number) => {
