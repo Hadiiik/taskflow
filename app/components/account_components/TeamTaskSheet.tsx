@@ -10,14 +10,14 @@ interface Task {
 }
 
 interface TeamTaskSheetProps {
-  team_id: number;
+  table_id: number|string;
   table_name: string;
   columns_array: string[];
   task_array: Task[];
 }
 
 const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
-  team_id = 0,
+  table_id = 0,
   table_name = "جدول بدون اسم",
   columns_array = [],
   task_array = [],

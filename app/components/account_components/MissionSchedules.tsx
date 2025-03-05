@@ -8,9 +8,10 @@ interface MissionSchedule {
 
 interface MissionSchedulesProps {
   schedules: MissionSchedule[]|[]|null;
+  team_id : string|number;
 }
 
-const MissionSchedules: React.FC<MissionSchedulesProps> = ({ schedules }) => {
+const MissionSchedules: React.FC<MissionSchedulesProps> = ({ schedules , team_id }) => {
   // تحقق مما إذا كانت المصفوفة فارغة
   if (!schedules || schedules.length === 0) {
     return <p className="text-center text-gray-500 mt-4 text-lg">لا توجد جداول متاحة</p>;
@@ -28,7 +29,7 @@ const MissionSchedules: React.FC<MissionSchedulesProps> = ({ schedules }) => {
         {schedules.map((schedule) => (
           <a
             key={schedule.id} // تأكد من استخدام مفتاح فريد
-            href={`/schedule/${schedule.id}`}
+            href={`/account/team/${team_id}/schedule/${schedule.id}`}
             className="block bg-white rounded-3xl shadow-md py-3 text-center text-lg md:text-xl font-semibold transition hover:shadow-lg border-2 border-purple-600"
             style={{
               borderRadius: "12px",

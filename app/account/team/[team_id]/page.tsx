@@ -37,7 +37,7 @@ export default async function Page({
         <AccountHeader/>
 
         <div className='lg:my-2 my-20'>
-        <MissionSchedules schedules={tables}/>
+        <MissionSchedules schedules={tables} team_id={team_id}/>
         </div>
 
         {/* if admin  */}
