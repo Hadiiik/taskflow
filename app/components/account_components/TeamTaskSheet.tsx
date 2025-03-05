@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react";
+import PopUpCreateTask from "./PopUpCreateTask";
 
 interface Task {
   name: string;
@@ -81,6 +82,8 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
   };
 
   return (
+    <>
+    {/* <PopUpCreateTask team_id={0} id={0}/> */}
     <div className="w-full max-w-4xl mx-auto p-4">
       <div className="bg-gradient-to-r from-purple-500 to-purple-700 text-white text-center py-3 rounded-t-lg font-bold text-lg">
         {table_name}
@@ -171,7 +174,9 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
           })}
           <tr>
             <td colSpan={columns_array.length + 2} className="border px-4 py-2">
-              <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-700 text-white px-4 py-2 rounded-lg mx-auto">
+              <button 
+                
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-700 text-white px-4 py-2 rounded-lg mx-auto">
                 <span className="w-5 h-5 font-bold">+</span>
                 <span>إضافة مهمة</span>
               </button>
@@ -180,6 +185,7 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

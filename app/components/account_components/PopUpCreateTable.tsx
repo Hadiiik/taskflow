@@ -91,7 +91,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
                   placeholder="اسم العمود"
                   value={column}
                   onChange={(e) => {
-                    let copyColumns = [...columns];
+                    const copyColumns = [...columns];
                     copyColumns[index] = e.target.value;
                     setColumns(copyColumns);
                   }}
