@@ -87,7 +87,7 @@ const PopUpCreateTable: React.FC<PopUpCreateTableProps> = ({ isSubscription = fa
                 </span>
                 <input
                   type="text"
-                  className="flex-1 p-0.5 border-2 border-gray-300 rounded-md focus:outline-none focus:border-purple-600 text-xs h-6 w-24"
+                  className="flex-1 px-4 py-4 border-2 border-gray-300 rounded-md focus:outline-none focus:border-purple-600 text-xs h-6 w-24"
                   placeholder="اسم العمود"
                   value={column}
                   onChange={(e) => {
