@@ -6,7 +6,7 @@ interface PopUpCreateTaskProps {
   id: number;
 }
 
-const PopUpCreateTask: React.FC<PopUpCreateTaskProps> = ({ team_id, id }) => {
+const PopUpCreateTask: React.FC<PopUpCreateTaskProps> = ({ id }) => {
   const [taskName, setTaskName] = useState<string>(""); // حالة اسم المهمة
   const [taskDateTime, setTaskDateTime] = useState<string>(""); // حالة تاريخ ووقت المهمة
 
@@ -26,7 +26,7 @@ const PopUpCreateTask: React.FC<PopUpCreateTaskProps> = ({ team_id, id }) => {
 
     // هنا يمكنك إرسال البيانات إلى الخادم أو إجراء أي عملية أخرى
     console.log("تم إنشاء المهمة:", {
-      team_id,
+      
       id,
       taskName,
       taskDateTime,

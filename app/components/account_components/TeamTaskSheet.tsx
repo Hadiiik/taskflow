@@ -1,7 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import ImportantCell from "./ImportantCell";
-import { useMediaQuery } from "react-responsive"; // للكشف عن حجم الشاشة
 
 interface Task {
   name: string;
@@ -13,15 +11,14 @@ interface Task {
 }
 
 interface TeamTaskSheetProps {
-  team_id?: number;
-  table_name?: string;
-  columns_array?: string[];
-  task_array?: Task[];
-  isAdmin: boolean;
+  team_id: number;
+  table_name: string;
+  columns_array: string[];
+  task_array: Task[];
 }
 
 const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
-  team_id = 0,
+  table_id = 0,
   table_name = "جدول بدون اسم",
   columns_array = [],
   task_array = [],
@@ -34,6 +31,7 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
 
   const handleDragStart = (taskIndex: number) => {
     setDraggingTaskIndex(taskIndex);
+    console.log(table_id)
   };
 
   const handleDrop = (columnIndex: number) => {
@@ -83,205 +81,108 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
   };
 
   return (
+    <>
+    {/* <PopUpCreateTask team_id={0} id={0}/> */}
     <div className="w-full max-w-4xl mx-auto p-4">
       <div className="bg-gradient-to-r from-purple-500 to-purple-700 text-white text-center py-3 rounded-t-lg font-bold text-lg">
         {table_name}
       </div>
-
-      {isMobile ? (
-        // عرض الهاتف
-        <div className="overflow-hidden relative">
-          <div
-            className="flex transition-transform duration-500"
-            style={{ transform: `translateX(-${currentPage * 100}%)` }}
-          >
-            {Array.from({ length: totalPages }).map((_, pageIndex) => (
-              <div key={pageIndex} className="w-full flex-shrink-0">
-                <table className="w-full table-auto border-collapse text-xs">
-                  <thead>
-                    <tr>
-                      <th className="border px-2 py-1 bg-blue-100">المهمات</th>
-                      {getColumnsForPage(pageIndex).map((column, index) => (
-                        <th key={index} className="border px-2 py-1">
-                          {column}
-                        </th>
-                      ))}
-                      {pageIndex === totalPages - 1 && (
-                        <th className="border px-2 py-1 bg-blue-100">إنهاء المهمة</th>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tasks.map((task, index) => (
-                      <tr key={index}>
-                        {/* عمود المهمات (ثابت في جميع الصفحات) */}
-                        <td
-                          className="border px-2 py-1"
-                          onDragOver={(e) => e.preventDefault()}
-                          onDrop={() => handleDrop(0)}
-                          style={{ userSelect: "none" }}
-                        >
-                          {task.currentColumn === 0 && (
-                            <ImportantCell
-                              task={task}
-                              onDragStart={() => handleDragStart(index)}
-                              onDelete={() => handleDeleteTask(index)}
-                              onPin={() => handlePinTask(index)}
-                              onAlert={() => handleAlertTask(index)}
-                              isAdmin={isAdmin}
-                            />
-                          )}
-                        </td>
-                        {/* الأعمدة الأخرى (تتغير حسب الصفحة) */}
-                        {getColumnsForPage(pageIndex).map((_, colIndex) => (
-                          <td
-                            key={colIndex}
-                            className="border px-2 py-1"
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={() => handleDrop(pageIndex * columnsPerPage + colIndex + 1)}
-                            style={{ userSelect: "none" }}
-                          >
-                            {task.currentColumn === pageIndex * columnsPerPage + colIndex + 1 && (
-                              <ImportantCell
-                                task={task}
-                                onDragStart={() => handleDragStart(index)}
-                                onDelete={() => handleDeleteTask(index)}
-                                onPin={() => handlePinTask(index)}
-                                onAlert={() => handleAlertTask(index)}
-                                isAdmin={isAdmin}
-                              />
-                            )}
-                          </td>
-                        ))}
-                        {/* عمود إنهاء المهمة (في الصفحة الأخيرة فقط) */}
-                        {pageIndex === totalPages - 1 && (
-                          <td
-                            className="border px-2 py-1 bg-blue-100"
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={() => handleDrop(columns_array.length + 1)}
-                            style={{ userSelect: "none" }}
-                          >
-                            {task.currentColumn === columns_array.length + 1 && (
-                              <ImportantCell
-                                task={task}
-                                onDragStart={() => handleDragStart(index)}
-                                onDelete={() => handleDeleteTask(index)}
-                                onPin={() => handlePinTask(index)}
-                                onAlert={() => handleAlertTask(index)}
-                                isAdmin={isAdmin}
-                              />
-                            )}
-                          </td>
-                        )}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+      <table className="w-full table-auto border-collapse text-sm">
+        <thead>
+          <tr>
+            <th className="border px-4 py-2 bg-blue-100">المهمات</th>
+            {columns_array.map((column, index) => (
+              <th key={index} className="border px-4 py-2">
+                {column}
+              </th>
             ))}
-          </div>
-
-          {/* أزرار التنقل بين الصفحات */}
-          <button
-            onClick={() => handlePageChange("left")}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-500 text-white p-2 rounded-full shadow-md hover:bg-purple-600 transition-colors"
-            disabled={currentPage === 0}
-          >
-            {"<"}
-          </button>
-          <button
-            onClick={() => handlePageChange("right")}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-purple-500 text-white p-2 rounded-full shadow-md hover:bg-purple-600 transition-colors"
-            disabled={currentPage === totalPages - 1}
-          >
-            {">"}
-          </button>
-        </div>
-      ) : (
-        // عرض سطح المكتب
-        <table className="w-full table-auto border-collapse text-sm">
-          <thead>
-            <tr>
-              <th className="border px-4 py-2 bg-blue-100">المهمات</th>
-              {columns_array.map((column, index) => (
-                <th key={index} className="border px-4 py-2">
-                  {column}
-                </th>
-              ))}
-              <th className="border px-4 py-2 bg-blue-100">إنهاء المهمة</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task, index) => (
-              <tr key={index}>
-                <td
-                  className="border px-4 py-2"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={() => handleDrop(0)}
-                  style={{ userSelect: "none" }}
-                >
-                  {task.currentColumn === 0 && (
-                    <ImportantCell
-                      task={task}
-                      onDragStart={() => handleDragStart(index)}
-                      onDelete={() => handleDeleteTask(index)}
-                      onPin={() => handlePinTask(index)}
-                      onAlert={() => handleAlertTask(index)}
-                      isAdmin={isAdmin}
-                    />
-                  )}
-                </td>
-                {columns_array.map((_, colIndex) => (
+            <th className="border px-4 py-2 bg-blue-100">إنهاء المهمة</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tasks.map((task, index) => {
+            if (!task || !task.name || !task.due_date) return null;
+            return (
+              <React.Fragment key={index}>
+                {/* عرض المهمة في العمود الحالي */}
+                <tr>
                   <td
-                    key={colIndex}
-                    className="border px-4 py-2"
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={() => handleDrop(colIndex + 1)}
-                    style={{ userSelect: "none" }}
+                    className={`border px-4 py-2 rounded-lg ${
+                      task.currentColumn === 0 ? getRemainingTimeColor(task.due_date) : "bg-transparent"
+                    }`}
+                    draggable
+                    onDragStart={() => handleDragStart(index)}
+                    style={{ userSelect: "none" }} // منع تحديد النص
                   >
-                    {task.currentColumn === colIndex + 1 && (
-                      <ImportantCell
-                        task={task}
-                        onDragStart={() => handleDragStart(index)}
-                        onDelete={() => handleDeleteTask(index)}
-                        onPin={() => handlePinTask(index)}
-                        onAlert={() => handleAlertTask(index)}
-                        isAdmin={isAdmin}
-                      />
+                    {task.currentColumn === 0 && (
+                      <div>
+                        <span className="font-bold">{task.name}</span>
+                        <br />
+                        <span className="text-gray-600 text-xs">
+                          {formatRemainingTime(task.due_date)}
+                        </span>
+                      </div>
                     )}
                   </td>
-                ))}
-                <td
-                  className="border px-4 py-2 bg-blue-100"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={() => handleDrop(columns_array.length + 1)}
-                  style={{ userSelect: "none" }}
-                >
-                  {task.currentColumn === columns_array.length + 1 && (
-                    <ImportantCell
-                      task={task}
-                      onDragStart={() => handleDragStart(index)}
-                      onDelete={() => handleDeleteTask(index)}
-                      onPin={() => handlePinTask(index)}
-                      onAlert={() => handleAlertTask(index)}
-                      isAdmin={isAdmin}
-                    />
-                  )}
-                </td>
-              </tr>
-            ))}
-            <tr>
-              <td colSpan={columns_array.length + 2} className="border px-4 py-2">
-                <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-700 text-white px-4 py-2 rounded-lg mx-auto">
-                  <span className="w-5 h-5 font-bold">+</span>
-                  <span>إضافة مهمة</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      )}
+                  {columns_array.map((_, colIndex) => (
+                    <td
+                      key={colIndex}
+                      className="border px-4 py-2"
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={() => handleDrop(colIndex + 1)} // +1 لأن العمود الأول هو عمود المهام
+                      style={{ userSelect: "none" }} // منع تحديد النص
+                    >
+                      {task.currentColumn === colIndex + 1 && (
+                        <div
+                          className={`p-2 rounded-lg ${getRemainingTimeColor(task.due_date)}`}
+                          draggable
+                          onDragStart={() => handleDragStart(index)}
+                        >
+                          <span className="font-bold">{task.name}</span>
+                          <br />
+                          <span className="text-gray-600 text-xs">
+                            {formatRemainingTime(task.due_date)}
+                          </span>
+                        </div>
+                      )}
+                    </td>
+                  ))}
+                  <td
+                    className="border px-4 py-2 bg-blue-100"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDrop(columns_array.length + 1)} // +1 لأن العمود الأول هو عمود المهام
+                    style={{ userSelect: "none" }} // منع تحديد النص
+                  >
+                    {task.currentColumn === columns_array.length + 1 && (
+                      <div
+                        className={`p-2 rounded-lg ${getRemainingTimeColor(task.due_date)}`}
+                        draggable
+                        onDragStart={() => handleDragStart(index)}
+                      >
+                        <span className="font-bold">{task.name}</span>
+                        <br />
+                        <span className="text-gray-600 text-xs">
+                          {formatRemainingTime(task.due_date)}
+                        </span>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              </React.Fragment>
+            );
+          })}
+          <tr>
+            <td colSpan={columns_array.length + 2} className="border px-4 py-2">
+              <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-700 text-white px-4 py-2 rounded-lg mx-auto">
+                <span className="w-5 h-5 font-bold">+</span>
+                <span>إضافة مهمة</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    </>
   );
 };
 
