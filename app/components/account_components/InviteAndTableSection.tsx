@@ -17,6 +17,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
 
   const toggleMenu = () => {
     setIsOpen(prev => !prev); // عكس الحالة الحالية للقائمة
+    console.log("fhh")
   };
 
   const getInvite = async (team_id: string | number) => {
@@ -35,20 +36,23 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // تجاهل إغلاق القائمة إذا كان النقر على الزر
       if (
         menuRef.current && 
         !menuRef.current.contains(event.target as Node) && 
+        
         buttonRef.current && 
         !buttonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false); // إغلاق القائمة عند التفاعل مع الصفحة
       }
+      
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mouseup', handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mouseup', handleClickOutside);
     };
   }, []);
 
@@ -69,6 +73,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
       )}
 
       <button
+      
         ref={buttonRef} // إضافة المرجع للزر
         onClick={toggleMenu}
         className={`fixed z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 
@@ -85,8 +90,8 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
       <div className="hidden md:flex fixed left-1/2 -translate-x-1/2 bottom-6 space-x-6 transition-all duration-300">
         <button
           onClick={() => {
-            setIsOpen(false); // إغلاق القائمة المنسدلة
             setShowCreateTablePopup(true); // فتح نافذة إنشاء الجدول
+            setIsOpen(false); // إغلاق القائمة المنسدلة
           }}
           className={`w-44 h-12 bg-gradient-to-r from-purple-500 to-purple-700 
           text-white rounded-lg flex items-center justify-center space-x-3 shadow-lg
@@ -162,6 +167,7 @@ const InviteAndTableSection = ({ team_id }: { team_id: string | number }) => {
 
           <button
             onClick={() => {
+              console.log("1")
               setIsOpen(false); // إغلاق القائمة المنسدلة
               setShowCreateTablePopup(true); // فتح نافذة إنشاء الجدول
             }}
