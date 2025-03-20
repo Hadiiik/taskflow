@@ -13,25 +13,27 @@ const Page = () => {
         password: ""
     });
 
-    const [errorMessage, setErrorMessage] = useState<string | null>(null); // حالة الرسالة الخطأ
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const result = await client_login({ ...userInfo });
 
         if (result.success === true) {
-            redirect("/account"); // إعادة التوجيه إلى صفحة المستخدم
+            redirect("/user");
         } else {
-            setErrorMessage("فشل تسجيل الدخول. يرجى التحقق من بياناتك."); // تعيين رسالة الخطأ
+            setErrorMessage("فشل تسجيل الدخول. يرجى التحقق من بياناتك.");
         }
     };
 
     const handleCloseError = () => {
-        setErrorMessage(null); // إغلاق رسالة الخطأ
+        setErrorMessage(null);
     };
 
     return (
-        <div className="max-w-md md:mx-auto mx-6 p-6 bg-white rounded-xl border-2 border-violet-500 m-12">
+        <div className="max-w-md md:mx-auto mx-6 p-8 bg-white rounded-xl border-2 border-violet-500 m-12 relative overflow-hidden shadow-[0_0_20px_5px_rgba(124,58,237,0.3)]">
+        
+
             {/* رابط TaskFlow خارج البطاقة */}
             <div className="text-center mb-8">
                 <Link href="/" className="text-3xl font-semibold text-violet-700 hover:text-violet-900 transition duration-300">
@@ -51,7 +53,7 @@ const Page = () => {
                         value={userInfo.email}
                         onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                         required
-                        className="w-full p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
+                        className="w-full p-2 md:p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
                     />
                 </div>
 
@@ -65,14 +67,14 @@ const Page = () => {
                         value={userInfo.password}
                         onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
                         required
-                        className="w-full p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
+                        className="w-full p-2 md:p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
                     />
                 </div>
 
                 {/* زر التسجيل */}
                 <button
                     type="submit"
-                    className="w-full py-3 bg-violet-900 text-white rounded-md text-lg hover:bg-violet-700 focus:bg-violet-700 transition duration-300 my-4"
+                    className="w-full py-2 md:py-3 bg-gradient-to-r from-violet-700 to-violet-900 text-white rounded-md text-lg hover:from-violet-600 hover:to-violet-800 focus:from-violet-600 focus:to-violet-800 transition duration-300 my-4"
                 >
                     تسجيل الدخول
                 </button>

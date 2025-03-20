@@ -23,7 +23,7 @@ const Page = () => {
         if (result.success === true) {
             redirect("/account"); // إعادة التوجيه إلى صفحة المستخدم
         } else {
-            setErrorMessage( "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى."); // تعيين رسالة الخطأ
+            setErrorMessage("فشل إنشاء الحساب. يرجى المحاولة مرة أخرى."); // تعيين رسالة الخطأ
         }
     };
 
@@ -32,7 +32,8 @@ const Page = () => {
     };
 
     return (
-        <div className="max-w-md md:mx-auto mx-6 p-6 bg-white rounded-xl border-2 border-violet-500 m-12">
+        <div className="max-w-md md:mx-auto mx-6 p-8 bg-white rounded-xl border-2 border-violet-500 m-12 relative overflow-hidden shadow-[0_0_20px_5px_rgba(124,58,237,0.3)]">
+
             {/* رابط TaskFlow خارج البطاقة */}
             <div className="text-center mb-8">
                 <Link href="/" className="text-3xl font-semibold text-violet-700 hover:text-violet-900 transition duration-300">
@@ -41,7 +42,7 @@ const Page = () => {
             </div>
 
             <h2 className="text-3xl font-bold text-center text-violet-900 mb-8">انشاء حساب</h2>
-            <form onSubmit={handelSubmit} className="space-y-6 shadow-sm">
+            <form onSubmit={handelSubmit} className="space-y-6">
                 {/* حقل البريد الإلكتروني */}
                 <div>
                     <label htmlFor="email" className="block text-sm text-violet-900 mb-2">البريد الإلكتروني</label>
@@ -52,7 +53,7 @@ const Page = () => {
                         value={userInfo.email}
                         onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                         required
-                        className="w-full p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
+                        className="w-full p-2 md:p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
                     />
                 </div>
 
@@ -66,7 +67,7 @@ const Page = () => {
                         value={userInfo.name}
                         onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
                         required
-                        className="w-full p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
+                        className="w-full p-2 md:p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
                     />
                 </div>
 
@@ -80,14 +81,14 @@ const Page = () => {
                         value={userInfo.password}
                         onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
                         required
-                        className="w-full p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
+                        className="w-full p-2 md:p-3 border-2 border-violet-500 bg-violet-50 text-violet-900 placeholder-violet-400 rounded-md focus:outline-none focus:border-amber-500"
                     />
                 </div>
 
                 {/* زر التسجيل */}
                 <button
                     type="submit"
-                    className="w-full py-3 bg-violet-900 text-white rounded-md text-lg hover:bg-violet-700 focus:bg-violet-700 transition duration-300 my-4"
+                    className="w-full py-2 md:py-3 bg-gradient-to-r from-violet-700 to-violet-900 text-white rounded-md text-lg hover:from-violet-600 hover:to-violet-800 focus:from-violet-600 focus:to-violet-800 transition duration-300 my-4"
                 >
                     انشاء حساب
                 </button>
