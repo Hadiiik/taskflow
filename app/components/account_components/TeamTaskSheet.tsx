@@ -8,6 +8,7 @@ interface Task {
   due_date: string; // تاريخ ووقت انتهاء المهمة
   currentColumn: number;
   isCompleted?: boolean;
+  editedBy_id ?: number|string;
 }
 
 interface TeamTaskSheetProps {
@@ -15,6 +16,7 @@ interface TeamTaskSheetProps {
   table_name: string;
   columns_array: string[];
   task_array: Task[];
+  admin_id : string|number;
 }
 
 const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
@@ -22,6 +24,7 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
   table_name = "جدول بدون اسم",
   columns_array = [],
   task_array = [],
+  admin_id = 0
 }) => {
   const [tasks, setTasks] = useState<Task[]>(task_array);
   const [draggingTaskIndex, setDraggingTaskIndex] = useState<number | null>(null);
@@ -40,7 +43,7 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
       task.currentColumn = columnIndex;
 
       // إذا تم نقل المهمة إلى عمود "إنهاء المهمة"، قم بتحديدها كمكتملة
-      if (columnIndex === columns_array.length) {
+      if (columnIndex === columns_array.length+1) {
         task.isCompleted = true;
       } else {
         task.isCompleted = false;
@@ -122,6 +125,23 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
                         <span className="text-gray-600 text-xs">
                           {formatRemainingTime(task.due_date)}
                         </span>
+                        {/* approve or dinye buttons */}
+                        { (task.editedBy_id != admin_id)&&
+                          <div>
+                            <button
+                        className=" bg-green-500 mx-3 text-white rounded-lg hover:bg-green-600 transition"
+                        >
+                        ✅
+                        </button>
+
+                        <button
+                        className=" bg-red-200 mx-3 text-white rounded-lg hover:bg-red-600 transition"
+                        >
+                        ❌
+                        </button>
+                          </div>
+                        }
+
                       </div>
                     )}
                   </td>
@@ -144,6 +164,22 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
                           <span className="text-gray-600 text-xs">
                             {formatRemainingTime(task.due_date)}
                           </span>
+                        {/* approve or dinye buttons */}
+                        { (task.editedBy_id != admin_id)&&
+                          <div>
+                            <button
+                        className=" bg-green-500 mx-3 text-white rounded-lg hover:bg-green-600 transition"
+                        >
+                        ✅
+                        </button>
+
+                        <button
+                        className=" bg-red-200 mx-3 text-white rounded-lg hover:bg-red-600 transition"
+                        >
+                        ❌
+                        </button>
+                          </div>
+                        }
                         </div>
                       )}
                     </td>
@@ -165,6 +201,22 @@ const TeamTaskSheet: React.FC<TeamTaskSheetProps> = ({
                         <span className="text-gray-600 text-xs">
                           {formatRemainingTime(task.due_date)}
                         </span>
+                       {/* approve or dinye buttons */}
+                       { (task.editedBy_id != admin_id)&&
+                          <div>
+                            <button
+                        className=" bg-green-500 mx-3 text-white rounded-lg hover:bg-green-600 transition"
+                        >
+                        ✅
+                        </button>
+
+                        <button
+                        className=" bg-red-200 mx-3 text-white rounded-lg hover:bg-red-600 transition"
+                        >
+                        ❌
+                        </button>
+                          </div>
+                        }
                       </div>
                     )}
                   </td>
