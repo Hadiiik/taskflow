@@ -15,7 +15,7 @@ const page = () => {
       <ProblemsSection/>
       <FeaturesSection/>
       <Footer/>
-      <InviteAndTableSection team_id={100}/>
+      
       
     </>
   )
