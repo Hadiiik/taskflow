@@ -4,7 +4,6 @@ import ProblemsSection from './components/ProblemsSection'
 import FeaturesSection from './components/FeaturesSection'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import InviteAndTableSection from './components/account_components/InviteAndTableSection'
 
 const page = () => {
   
