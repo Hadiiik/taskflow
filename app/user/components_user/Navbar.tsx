@@ -19,7 +19,7 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                     </Link>
                     <button
                         onClick={toggleSidebar}
-                        className="p-2 rounded-lg outline-none focus:outline-none" // إضافة outline-none
+                        className="p-2 rounded-lg outline-none focus:outline-none"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
 
             {/* القائمة الجانبية */}
             <div
-                className={`fixed top-0 right-0 h-full w-36 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 border-l-2 border-violet-100 ${
+                className={`z-50 fixed top-0 right-0 h-full w-36 bg-white shadow-lg transform transition-transform duration-300 ease-in-out  border-l-2 border-violet-100 ${
                     isSidebarOpen ? "translate-x-0" : "translate-x-full"
                 } md:w-64`} 
             >

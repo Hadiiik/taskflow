@@ -1,3 +1,4 @@
+"use client"
 import { useRouter } from 'next/router';
 import React from 'react';
 import SheerUser from '../components_user/SheerUser';

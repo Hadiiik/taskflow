@@ -45,7 +45,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
     };
 
     const handleShare = async () => {
-        const dynamicUrl = `taskflow-onrequest.vercel.app/sharing/${id}`;
+        const dynamicUrl = `/sharing/${id}`; // إنشاء الرابط الديناميكي
         const shareData = {
             title: `معلومات ${name}`,
             text: `تعرف على ${name}!`,
@@ -69,7 +69,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
     };
 
     return (
-        <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border border-gray-100 max-w-xs sm:max-w-md mx-auto text-right transform transition-all duration-300 hover:shadow-3xl">
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-violet-100 max-w-xs sm:max-w-md mx-auto text-right ">
             <div className="flex justify-center mb-3 sm:mb-4">
                 <FaUserCircle className="w-16 h-16 sm:w-20 sm:h-20 text-blue-600" />
             </div>
