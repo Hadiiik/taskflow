@@ -7,7 +7,7 @@ import Footer from './components/Footer'
 import InviteAndTableSection from './components/account_components/InviteAndTableSection'
 
 const page = () => {
-  
+
   return (
     <>
       <Header/>

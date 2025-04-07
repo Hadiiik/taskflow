@@ -1,5 +1,6 @@
+"use client"
 import React, { useState } from 'react';
-import { FaShare, FaUserCircle, FaPhone, FaLinkedin, FaEnvelope, FaSave, FaTimes, FaEdit } from 'react-icons/fa';
+import { FaShare, FaUserCircle, FaPhone, FaLinkedin, FaEnvelope, FaSave, FaTimes, FaEdit, FaSignOutAlt } from 'react-icons/fa';
 import Link from 'next/link';
 
 interface Team {
@@ -8,7 +9,7 @@ interface Team {
 }
 
 interface AccountCardProps {
-    id: string; // إضافة id كـ prop
+    id: string;
     name: string;
     completedTasks: number;
     teams: Team[];
@@ -16,9 +17,10 @@ interface AccountCardProps {
     linkedinUrl?: string;
     email?: string;
     bio?: string;
+    onLogout?: () => void;
 }
 
-const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, teams, phoneNumber, linkedinUrl, email, bio }) => {
+const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, teams, phoneNumber, linkedinUrl, email, bio, onLogout }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedPhoneNumber, setEditedPhoneNumber] = useState(phoneNumber || '');
     const [editedLinkedinUrl, setEditedLinkedinUrl] = useState(linkedinUrl || '');
@@ -26,6 +28,10 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
     const [editedBio, setEditedBio] = useState(bio || '');
 
     const handleSave = () => {
+        if (editedBio.length > 50) {
+            alert('النص التعريفي يجب ألا يتجاوز 50 محرفًا.');
+            return;
+        }
         console.log('تم حفظ التغييرات:', { editedPhoneNumber, editedLinkedinUrl, editedEmail, editedBio });
         setIsEditing(false);
     };
@@ -39,128 +45,149 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
     };
 
     const handleShare = async () => {
-        const dynamicUrl = `taskflow-onrequest.vercel.app/sharing/${id}`; // إنشاء الرابط الديناميكي
+        const dynamicUrl = `taskflow-onrequest.vercel.app/sharing/${id}`;
         const shareData = {
-            title: `معلومات ${name}`, // عنوان المشاركة
-            text: `تعرف على ${name}!`, // نص المشاركة (اختياري)
-            url: dynamicUrl, // الرابط الديناميكي
+            title: `معلومات ${name}`,
+            text: `تعرف على ${name}!`,
+            url: dynamicUrl,
         };
 
         if (navigator.share) {
             try {
-                await navigator.share(shareData); // فتح قائمة المشاركة
+                await navigator.share(shareData);
             } catch (error) {
                 console.error('حدث خطأ أثناء المشاركة:', error);
             }
         } else {
-            alert('عذرًا، المشاركة غير مدعومة في هذا المتصفح.'); // رسالة بديلة
+            alert('عذرًا، المشاركة غير مدعومة في هذا المتصفح.');
         }
     };
 
+    // دالة لفحص إذا كان الحقل فارغًا ولا يجب عرضه في وضع العرض العادي
+    const shouldShowField = (value?: string) => {
+        return value && value.trim() !== '';
+    };
+
     return (
-        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-violet-100 max-w-xs sm:max-w-md mx-auto text-right">
+        <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl border border-gray-100 max-w-xs sm:max-w-md mx-auto text-right transform transition-all duration-300 hover:shadow-3xl">
             <div className="flex justify-center mb-3 sm:mb-4">
-                <FaUserCircle className="w-16 h-16 sm:w-20 sm:h-20 text-violet-700" />
+                <FaUserCircle className="w-16 h-16 sm:w-20 sm:h-20 text-blue-600" />
             </div>
-
-            <h2 className="text-xl sm:text-2xl font-bold text-violet-900 mb-2 text-center">{name}</h2>
-
+    
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 text-center">{name}</h2>
+    
             {/* النص التعريفي */}
             <div className="mb-3 sm:mb-4 text-center">
                 {isEditing ? (
-                    <textarea
-                        value={editedBio}
-                        onChange={(e) => setEditedBio(e.target.value)}
-                        className="w-full text-xs sm:text-sm text-violet-700 p-1 border border-violet-300 rounded"
-                        rows={3}
-                        placeholder="أضف نصًا تعريفيًا..."
-                    />
-                ) : (
-                    <p className="text-xs sm:text-sm text-violet-700">{editedBio || bio || "لا يوجد نص تعريفي"}</p>
-                )}
-            </div>
-
-            {/* البريد الإلكتروني */}
-            {email && (
-                <div className="mb-3 sm:mb-4 text-center">
-                    {isEditing ? (
-                        <input
-                            type="email"
-                            value={editedEmail}
-                            onChange={(e) => setEditedEmail(e.target.value)}
-                            className="text-xs sm:text-sm text-violet-700 p-1 border border-violet-300 rounded"
+                    <div className="flex flex-col">
+                        <label className="text-xs text-gray-500 mb-1">النص التعريفي</label>
+                        <textarea
+                            value={editedBio}
+                            onChange={(e) => setEditedBio(e.target.value)}
+                            className="w-full text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
+                            rows={3}
+                            placeholder="أضف نصًا تعريفيًا..."
+                            maxLength={50}
                         />
-                    ) : (
-                        <p className="text-xs sm:text-sm text-violet-700 flex items-center justify-end space-x-2">
-                            <FaEnvelope className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>{email}</span>
-                        </p>
-                    )}
-                </div>
-            )}
-
-            {/* رقم الهاتف */}
-            {phoneNumber && (
+                    </div>
+                ) : shouldShowField(bio) ? (
+                    <p className="text-xs sm:text-sm text-gray-700">{bio}</p>
+                ) : null}
+            </div>
+    
+            {/* البريد الإلكتروني */}
+            {(isEditing || shouldShowField(email)) && (
                 <div className="mb-3 sm:mb-4">
                     {isEditing ? (
-                        <input
-                            type="tel"
-                            value={editedPhoneNumber}
-                            onChange={(e) => setEditedPhoneNumber(e.target.value)}
-                            className="text-xs sm:text-sm text-violet-700 p-1 border border-violet-300 rounded"
-                        />
+                        <div className="flex flex-col">
+                            <label className="text-xs text-gray-500 mb-1">البريد الإلكتروني</label>
+                            <input
+                                type="email"
+                                value={editedEmail}
+                                onChange={(e) => setEditedEmail(e.target.value)}
+                                className="text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
+                                placeholder="أدخل البريد الإلكتروني"
+                            />
+                        </div>
                     ) : (
-                        <p className="text-xs sm:text-sm text-violet-700 flex items-center justify-end space-x-2">
-                            <FaPhone className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>{phoneNumber}</span>
+                        <p className="text-xs sm:text-sm text-gray-700 flex items-center justify-end space-x-2">
+                            <span>{email}</span>
+                            <FaEnvelope className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                         </p>
                     )}
                 </div>
             )}
-
+    
+            {/* رقم الهاتف */}
+            {(isEditing || shouldShowField(phoneNumber)) && (
+                <div className="mb-3 sm:mb-4">
+                    {isEditing ? (
+                        <div className="flex flex-col">
+                            <label className="text-xs text-gray-500 mb-1">رقم الهاتف</label>
+                            <input
+                                type="tel"
+                                value={editedPhoneNumber}
+                                onChange={(e) => setEditedPhoneNumber(e.target.value)}
+                                className="text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
+                                placeholder="أدخل رقم الهاتف"
+                            />
+                        </div>
+                    ) : (
+                        <p className="text-xs sm:text-sm text-gray-700 flex items-center justify-end space-x-2">
+                            <span>{phoneNumber}</span>
+                            <FaPhone className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
+                        </p>
+                    )}
+                </div>
+            )}
+    
             {/* رابط LinkedIn */}
-            {linkedinUrl && (
+            {(isEditing || shouldShowField(linkedinUrl)) && (
                 <div className="mb-4 sm:mb-6">
                     {isEditing ? (
-                        <input
-                            type="url"
-                            value={editedLinkedinUrl}
-                            onChange={(e) => setEditedLinkedinUrl(e.target.value)}
-                            className="text-xs sm:text-sm text-violet-700 p-1 border border-violet-300 rounded"
-                        />
+                        <div className="flex flex-col">
+                            <label className="text-xs text-gray-500 mb-1">رابط LinkedIn</label>
+                            <input
+                                type="url"
+                                value={editedLinkedinUrl}
+                                onChange={(e) => setEditedLinkedinUrl(e.target.value)}
+                                className="text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
+                                placeholder="أدخل رابط LinkedIn"
+                            />
+                        </div>
                     ) : (
                         <a
                             href={linkedinUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs sm:text-sm text-violet-700 hover:text-violet-900 transition duration-300 flex items-center justify-end space-x-2"
+                            className="text-xs sm:text-sm text-blue-600 underline flex items-center justify-end space-x-2"
                         >
-                            <FaLinkedin className="w-3 h-3 sm:w-4 sm:h-4" />
                             <span>صفحة LinkedIn</span>
+                            <FaLinkedin className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                         </a>
                     )}
                 </div>
             )}
-
+    
             {/* عدد المهام المنجزة */}
-            <p className="text-xs sm:text-sm text-violet-700 mb-3 sm:mb-4">
+            <p className="text-xs sm:text-sm text-red-500 mb-3 sm:mb-4">
                 المهام المنجزة: <span className="font-bold">{completedTasks}</span>
             </p>
-
+    
             {/* الفرق المشترك فيها */}
             <div className="mb-4 sm:mb-6">
-                <h3 className="text-sm sm:text-lg font-semibold text-violet-900 mb-1 sm:mb-2">الفرق المشترك فيها:</h3>
+                <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-1 sm:mb-2">الفرق المشترك فيها:</h3>
                 <ul className="space-y-1">
                     {teams.map((team, index) => (
-                        <li key={index} className="text-xs sm:text-sm text-violet-700">
-                            <Link href={`/teams/${team.id}`} className="hover:text-violet-900 transition duration-300">
+                        <li key={index} className="text-xs sm:text-sm text-gray-700 border-b border-gray-200 pb-1">
+                            <Link href={`/teams/${team.id}`} className="text-blue-600 underline">
                                 {team.name}
                             </Link>
                         </li>
                     ))}
                 </ul>
             </div>
-
+    
             {/* أزرار التعديل والحفظ والإلغاء والمشاركة */}
             <div className="flex space-x-2">
                 {isEditing ? (
@@ -183,14 +210,14 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
                 ) : (
                     <>
                         <button
-                            className="w-full flex items-center justify-center space-x-2 p-1 sm:p-2 bg-violet-700 text-white rounded-lg hover:bg-violet-900 transition duration-300 focus:outline-none"
+                            className="w-full flex items-center justify-center space-x-2 p-1 sm:p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none"
                             onClick={() => setIsEditing(true)}
                         >
                             <FaEdit className="w-4 h-4 sm:w-5 sm:h-5" />
                             <span className="text-xs sm:text-sm">تعديل</span>
                         </button>
                         <button
-                            className="w-full flex items-center justify-center space-x-2 p-1 sm:p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none"
+                            className="w-full flex items-center justify-center space-x-2 p-1 sm:p-2 bg-violet-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none"
                             onClick={handleShare}
                         >
                             <FaShare className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -199,8 +226,19 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
                     </>
                 )}
             </div>
+    
+            {/* زر تسجيل الخروج */}
+            <div className="mt-4">
+                <button
+                    className="w-full flex items-center justify-center space-x-2 p-1 sm:p-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 focus:outline-none"
+                    onClick={onLogout}
+                >
+                    <FaSignOutAlt className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-xs sm:text-sm">تسجيل الخروج</span>
+                </button>
+            </div>
         </div>
-    );
+    )
 };
 
 export default AccountCard;
