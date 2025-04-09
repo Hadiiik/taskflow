@@ -45,7 +45,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, name, completedTasks, tea
     };
 
     const handleShare = async () => {
-        const dynamicUrl = `/sharing/${id}`; // إنشاء الرابط الديناميكي
+        const dynamicUrl = `user/sharing/${id}`; // إنشاء الرابط الديناميكي
         const shareData = {
             title: `معلومات ${name}`,
             text: `تعرف على ${name}!`,
