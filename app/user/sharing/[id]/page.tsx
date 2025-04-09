@@ -2,7 +2,13 @@
 import React from 'react';
 import SheerUser from '../../components_user/SheerUser';
 
-const ProfilePage = async ({params}:{params:{id:string}}) => {
+const ProfilePage = async (
+    {
+        params,
+      }: {
+        params: Promise<{ id: string }>;
+      }
+) => {
     const id = (await params).id
     if (!id) {
         return <div>جاري التحميل...</div>; // عرض رسالة تحميل إذا لم يتم تحميل الـ id بعد
