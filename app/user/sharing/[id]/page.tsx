@@ -1,11 +1,9 @@
-"use client"
-import { useRouter } from 'next/router';
-import React from 'react';
-import SheerUser from '../components_user/SheerUser';
 
-const ProfilePage: React.FC = () => {
-    const router = useRouter();
-    const { id } = router.query; // الحصول على الـ id من الرابط
+import React from 'react';
+import SheerUser from '../../components_user/SheerUser';
+
+const ProfilePage = async ({params}:{params:{id:string}}) => {
+    const id = (await params).id
     if (!id) {
         return <div>جاري التحميل...</div>; // عرض رسالة تحميل إذا لم يتم تحميل الـ id بعد
     }
