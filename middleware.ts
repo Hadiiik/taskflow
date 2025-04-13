@@ -1,9 +1,10 @@
 // /middleware.ts
 import { NextRequest, NextResponse } from "next/server";
+import { getJwtUser } from "./server_helpers/get_jwt_user";
 
 export function middleware(req: NextRequest) {
 
-  
+
 
 
 

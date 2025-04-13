@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
 
     // التحقق من صلاحية المستخدم
     if (jwt_user_id != user_id) {
+        console.log(jwt_user)
         return NextResponse.json({ error: "Not Authorized" }, { status: 403 });
     }
 

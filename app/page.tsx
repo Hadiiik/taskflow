@@ -9,6 +9,9 @@ const page = () => {
 
   return (
     <>
+
+
+
       <Header/>
       <HeroSection/>
       <ProblemsSection/>
