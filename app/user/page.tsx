@@ -22,14 +22,7 @@ const HomePage = () => {
             
             <div className="container mx-auto px-4 py-20">
                 {activeComponent === 'account' && <AccountCard
-                            id="123"
-                            name="محمد أحمد"
-                            completedTasks={15}
-                            teams={teams}
-                            phoneNumber="+966500000000"
-                            linkedinUrl="https://www.linkedin.com/in/example"
-                            email="example@example.com"
-                            bio="مطور واجهات أمامية بخبرة 5 سنوات في React وNext.js" 
+                            id="24"
                         />}
                 {activeComponent === 'tasks' && <TaskManager />}
                 {activeComponent === 'teams' && <TeamManager />}  
