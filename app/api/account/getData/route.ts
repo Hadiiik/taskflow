@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     if (jwt_user instanceof NextResponse) {
         return jwt_user;
     }
-
     try {
         // جلب بيانات name و bio من Supabase
         const { data, error } = await supabase
