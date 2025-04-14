@@ -1,6 +1,6 @@
 // app/components/SheerUser.tsx
 import { supabase } from "@/lib/supabase";
-import { FaUserCircle, FaPhone, FaLinkedin, FaEnvelope, FaTasks } from "react-icons/fa";
+import { FaUserCircle, FaPhone, FaLinkedin, FaEnvelope } from "react-icons/fa";
 interface Props {
   id: string;
 }

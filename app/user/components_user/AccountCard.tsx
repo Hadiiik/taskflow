@@ -118,6 +118,11 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
         LinkedinUrl: editedData.LinkedinUrl,
         Email: editedData.Email
       });
+      if (!result.success) {
+        alert("فشل في حفظ التعديلات");
+        return;
+      }
+      alert("تم حفظ التعديلات بنجاح");
 
       
       setUserData({
