@@ -3,21 +3,23 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FaUserCircle, FaEnvelope, FaPhone, FaLinkedin, FaSave, FaTimes, FaEdit, FaShare, FaSignOutAlt } from "react-icons/fa";
 
-
-// أنواع البيانات
 interface Team {
   name: string;
   id: string;
+}
+
+interface BioData {
+  Email?: string;
+  PhoneNumber?: string;
+  LinkedinUrl?: string;
+  Bio?: string;
 }
 
 interface UserData {
   name: string;
   completedTasks: number;
   teams: Team[];
-  phoneNumber?: string;
-  linkedinUrl?: string;
-  email?: string;
-  bio?: string;
+  bioData: BioData;
 }
 
 interface AccountCardProps {
@@ -25,97 +27,102 @@ interface AccountCardProps {
   onLogout?: () => void;
 }
 
-// دالة وهمية لجلب البيانات (استبدلها بـ API حقيقي)
 const fetchUserData = async (id: string): Promise<UserData> => {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve({
-        name: "محمد الأحمد",
-        completedTasks: 12,
-        teams: [
-          { name: "فريق البرمجة", id: "team1" },
-          { name: "فريق التصميم", id: "team2" },
-        ],
-        phoneNumber: "0912345678",
-        linkedinUrl: "https://linkedin.com/in/example",
-        email: "mohammed@example.com",
-        bio: "مطور ويب بخبرة 5 سنوات",
-      });
-    }, 1500)
-  );
+  try {
+    const response = await fetch(`/api/account/getData?user_id=${id}`);
+    
+    if (!response.ok) {
+      throw new Error('فشل في جلب بيانات المستخدم');
+    }
+
+    const { name, bio } = await response.json();
+    
+    // معالجة بيانات bio سواء كانت سلسلة JSON أو كائن
+    const bioData = typeof bio === 'string' ? JSON.parse(bio) : bio || {};
+
+    return {
+      name,
+      bioData: {
+        Email: bioData.Email || "",
+        PhoneNumber: bioData.PhoneNumber || "",
+        LinkedinUrl: bioData.LinkedinUrl || "",
+        Bio: bioData.Bio || ""
+      },
+      completedTasks: 0,
+      teams: []
+    };
+  } catch (error) {
+    console.error('خطأ في جلب البيانات:', error);
+    throw error;
+  }
 };
 
 const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-
-  const [editedPhoneNumber, setEditedPhoneNumber] = useState("");
-  const [editedLinkedinUrl, setEditedLinkedinUrl] = useState("");
-  const [editedEmail, setEditedEmail] = useState("");
-  const [editedBio, setEditedBio] = useState("");
+  const [editedData, setEditedData] = useState<BioData>({
+    Email: "",
+    PhoneNumber: "",
+    LinkedinUrl: "",
+    Bio: ""
+  });
 
   useEffect(() => {
-    const getData = async () => {
+    const loadData = async () => {
       setLoading(true);
       try {
         const data = await fetchUserData(id);
         setUserData(data);
-        setEditedPhoneNumber(data.phoneNumber || "");
-        setEditedLinkedinUrl(data.linkedinUrl || "");
-        setEditedEmail(data.email || "");
-        setEditedBio(data.bio || "");
+        setEditedData(data.bioData);
       } catch (error) {
-        console.error("خطأ في جلب البيانات:", error);
+        console.error("خطأ في تحميل البيانات:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    getData();
+    loadData();
   }, [id]);
 
   const handleSave = async () => {
-    // edit data
-    const result = await editAccountData(id,{
-      "Bio":editedBio,
-      "PhoneNumber":editedPhoneNumber,
-      "LinkedinUrl":editedLinkedinUrl,
-      "Email":editedEmail
-    });
-    console.log(result);
-    if (editedBio.length > 50) {
-      alert("النص التعريفي يجب ألا يتجاوز 50 محرفًا.");
-      return;
-    }
-
     if (!userData) return;
 
-    // تحديث البيانات محليًا (يمكنك ربطها بـ API لاحقًا)
-    setUserData({
-      ...userData,
-      phoneNumber: editedPhoneNumber,
-      linkedinUrl: editedLinkedinUrl,
-      email: editedEmail,
-      bio: editedBio,
-    });
+    try {
+      const result = await editAccountData(id, {
+        Bio: editedData.Bio,
+        PhoneNumber: editedData.PhoneNumber,
+        LinkedinUrl: editedData.LinkedinUrl,
+        Email: editedData.Email
+      });
 
-    setIsEditing(false);
+      console.log("نتيجة التعديل:", result);
+
+      setUserData({
+        ...userData,
+        bioData: editedData
+      });
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error("خطأ في حفظ التعديلات:", error);
+      alert("حدث خطأ أثناء حفظ التعديلات");
+    }
   };
 
   const handleCancel = () => {
     if (!userData) return;
     setIsEditing(false);
-    setEditedPhoneNumber(userData.phoneNumber || "");
-    setEditedLinkedinUrl(userData.linkedinUrl || "");
-    setEditedEmail(userData.email || "");
-    setEditedBio(userData.bio || "");
+    setEditedData(userData.bioData);
   };
 
   const handleShare = async () => {
+    if (!userData) return;
+
     const dynamicUrl = `user/sharing/${id}`;
     const shareData = {
-      title: `معلومات ${userData?.name}`,
-      text: `تعرف على ${userData?.name}!`,
+      title: `معلومات ${userData.name}`,
+      text: `تعرف على ${userData.name}!`,
       url: dynamicUrl,
     };
 
@@ -130,8 +137,8 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
     }
   };
 
-  const shouldShowField = (value?: string) => {
-    return value && value.trim() !== "";
+  const shouldShowField = (value: string | undefined | null): boolean => {
+    return value != null && typeof value === 'string' && value.trim() !== '';
   };
 
   if (loading) {
@@ -150,52 +157,50 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
     );
   }
 
-  const { name, completedTasks, teams, phoneNumber, linkedinUrl, email, bio } = userData;
-
   return (
     <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-violet-100 max-w-xs sm:max-w-md mx-auto text-right">
       <div className="flex justify-center mb-3 sm:mb-4">
         <FaUserCircle className="w-16 h-16 sm:w-20 sm:h-20 text-blue-600" />
       </div>
 
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 text-center">{name}</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 text-center">{userData.name}</h2>
 
-      {/* النص التعريفي */}
+      {/* السيرة الذاتية */}
       <div className="mb-3 sm:mb-4 text-center">
         {isEditing ? (
           <div className="flex flex-col">
-            <label className="text-xs text-gray-500 mb-1">النص التعريفي</label>
+            <label className="text-xs text-gray-500 mb-1">السيرة الذاتية</label>
             <textarea
-              value={editedBio}
-              onChange={(e) => setEditedBio(e.target.value)}
+              value={editedData.Bio || ""}
+              onChange={(e) => setEditedData({...editedData, Bio: e.target.value})}
               className="w-full text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
               rows={3}
-              placeholder="أضف نصًا تعريفيًا..."
+              placeholder="أضف سيرة ذاتية..."
               maxLength={50}
             />
           </div>
-        ) : shouldShowField(bio) ? (
-          <p className="text-xs sm:text-sm text-gray-700">{bio}</p>
+        ) : shouldShowField(userData.bioData.Bio) ? (
+          <p className="text-xs sm:text-sm text-gray-700">{userData.bioData.Bio}</p>
         ) : null}
       </div>
 
       {/* البريد الإلكتروني */}
-      {(isEditing || shouldShowField(email)) && (
+      {(isEditing || shouldShowField(userData.bioData.Email)) && (
         <div className="mb-3 sm:mb-4">
           {isEditing ? (
             <div className="flex flex-col">
               <label className="text-xs text-gray-500 mb-1">البريد الإلكتروني</label>
               <input
                 type="email"
-                value={editedEmail}
-                onChange={(e) => setEditedEmail(e.target.value)}
+                value={editedData.Email || ""}
+                onChange={(e) => setEditedData({...editedData, Email: e.target.value})}
                 className="text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
                 placeholder="أدخل البريد الإلكتروني"
               />
             </div>
           ) : (
             <p className="text-xs sm:text-sm text-gray-700 flex items-center justify-end space-x-2">
-              <span>{email}</span>
+              <span>{userData.bioData.Email}</span>
               <FaEnvelope className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
             </p>
           )}
@@ -203,22 +208,22 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
       )}
 
       {/* رقم الهاتف */}
-      {(isEditing || shouldShowField(phoneNumber)) && (
+      {(isEditing || shouldShowField(userData.bioData.PhoneNumber)) && (
         <div className="mb-3 sm:mb-4">
           {isEditing ? (
             <div className="flex flex-col">
               <label className="text-xs text-gray-500 mb-1">رقم الهاتف</label>
               <input
                 type="tel"
-                value={editedPhoneNumber}
-                onChange={(e) => setEditedPhoneNumber(e.target.value)}
+                value={editedData.PhoneNumber || ""}
+                onChange={(e) => setEditedData({...editedData, PhoneNumber: e.target.value})}
                 className="text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
                 placeholder="أدخل رقم الهاتف"
               />
             </div>
           ) : (
             <p className="text-xs sm:text-sm text-gray-700 flex items-center justify-end space-x-2">
-              <span>{phoneNumber}</span>
+              <span>{userData.bioData.PhoneNumber}</span>
               <FaPhone className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
             </p>
           )}
@@ -226,22 +231,22 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
       )}
 
       {/* رابط LinkedIn */}
-      {(isEditing || shouldShowField(linkedinUrl)) && (
+      {(isEditing || shouldShowField(userData.bioData.LinkedinUrl)) && (
         <div className="mb-4 sm:mb-6">
           {isEditing ? (
             <div className="flex flex-col">
               <label className="text-xs text-gray-500 mb-1">رابط LinkedIn</label>
               <input
                 type="url"
-                value={editedLinkedinUrl}
-                onChange={(e) => setEditedLinkedinUrl(e.target.value)}
+                value={editedData.LinkedinUrl || ""}
+                onChange={(e) => setEditedData({...editedData, LinkedinUrl: e.target.value})}
                 className="text-xs sm:text-sm text-gray-700 p-1 border border-gray-300 rounded"
                 placeholder="أدخل رابط LinkedIn"
               />
             </div>
           ) : (
             <a
-              href={linkedinUrl}
+              href={userData.bioData.LinkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-blue-600 underline flex items-center justify-end space-x-2"
@@ -253,26 +258,28 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
         </div>
       )}
 
-      {/* عدد المهام المنجزة */}
+      {/* المهام المنجزة */}
       <p className="text-xs sm:text-sm text-red-500 mb-3 sm:mb-4">
-        المهام المنجزة: <span className="font-bold">{completedTasks}</span>
+        المهام المنجزة: <span className="font-bold">{userData.completedTasks}</span>
       </p>
 
       {/* الفرق */}
-      <div className="mb-4 sm:mb-6">
-        <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-1 sm:mb-2">الفرق المشترك فيها:</h3>
-        <ul className="space-y-1">
-          {teams.map((team, index) => (
-            <li key={index} className="text-xs sm:text-sm text-gray-700 border-b border-gray-200 pb-1">
-              <Link href={`/teams/${team.id}`} className="text-blue-600 underline">
-                {team.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {userData.teams.length > 0 && (
+        <div className="mb-4 sm:mb-6">
+          <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-1 sm:mb-2">الفرق المشترك فيها:</h3>
+          <ul className="space-y-1">
+            {userData.teams.map((team, index) => (
+              <li key={index} className="text-xs sm:text-sm text-gray-700 border-b border-gray-200 pb-1">
+                <Link href={`/teams/${team.id}`} className="text-blue-600 underline">
+                  {team.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-      {/* أزرار */}
+      {/* أزرار التحكم */}
       <div className="flex space-x-2">
         {isEditing ? (
           <>

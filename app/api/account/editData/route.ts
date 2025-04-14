@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         // العودة باستجابة ناجحة
         return NextResponse.json({ message: "Bio updated successfully", data });
         
-    } catch (error) {
+    } catch  {
         // التعامل مع أي أخطاء أخرى
         return NextResponse.json({ error: "An error occurred while updating bio" }, { status: 500 });
     }

@@ -10,20 +10,20 @@ const HomePage = () => {
     const [activeComponent, setActiveComponent] = useState<string | null>(null);
     const { handleTabChange } = useTabHistory(setActiveComponent);
 
-    const teams = [
-        { name: "فريق التصميم", id: "1" },
-        { name: "فريق التطوير", id: "2" },
-        { name: "فريق التسويق", id: "3" },
-    ];
+    const handleLogout = () => {
+        // منطق تسجيل الخروج
+        console.log('تم تسجيل الخروج');
+      };
 
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar onMenuClick={handleTabChange} />
             
             <div className="container mx-auto px-4 py-20">
-                {activeComponent === 'account' && <AccountCard
-                            id="24"
-                        />}
+                        {activeComponent === 'account' &&  <AccountCard 
+                id="24" // يتم تمرير المعرف من الرابط
+                onLogout={handleLogout}
+            />}
                 {activeComponent === 'tasks' && <TaskManager />}
                 {activeComponent === 'teams' && <TeamManager />}  
             </div>
