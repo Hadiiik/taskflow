@@ -96,8 +96,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
         Email: editedData.Email
       });
 
-      console.log("نتيجة التعديل:", result);
-
+      
       setUserData({
         ...userData,
         bioData: editedData
