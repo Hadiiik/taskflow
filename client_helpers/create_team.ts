@@ -1,7 +1,8 @@
 import { team } from "@/types/team";
+import { TeamInfoObject } from "@/types/team_info_objects";
 
   
-  const createTeam = async (team: team) => {
+  const createTeam = async (team: TeamInfoObject) => {
     try {
       // استخدام await لجلب استجابة الطلب
       const response = await fetch('/api/create-team', {

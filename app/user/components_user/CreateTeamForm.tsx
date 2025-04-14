@@ -1,3 +1,4 @@
+import createTeam from '@/client_helpers/create_team';
 import React, { useState } from 'react';
 
 const CreateTeamForm = () => {
@@ -52,12 +53,20 @@ const CreateTeamForm = () => {
     return valid;
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit =async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     
     if (validateForm()) {
       // هنا يمكنك إضافة منطق حفظ البيانات
-      console.log('تم تقديم النموذج:', formData);
+      const result = await createTeam({
+        team_name: formData.teamName,
+        creator_id: '0', // Replace '0' with the appropriate creator ID
+        team_info_object: {
+          team_description: formData.teamDescription
+        }
+      })
+      if(!result.success) 
+        return;//show error message
       alert(`تم إنشاء الفريق: ${formData.teamName}`);
     }
   };
@@ -117,7 +126,7 @@ const CreateTeamForm = () => {
             type="submit"
             className="w-full bg-violet-600 hover:bg-violet-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300"
           >
-            حفظ الفريق
+            انشاء الفريق
           </button>
         </div>
       </form>

@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { team } from "@/types/team";
 import { supabase } from "@/lib/supabase";
 import  { decodeJWT } from "@/lib/createJwt";
 import { JwtPayload } from "jsonwebtoken";
+import { TeamInfoObject } from "@/types/team_info_objects";
 
 export async function POST(req: NextRequest) {
   try {
     // تحويل الطلب إلى JSON
-    const body: team = await req.json();
+    const body: TeamInfoObject= await req.json();
     const jwt = req.cookies.get("jwt");
     const jwt_value = jwt?.value;
 
@@ -33,8 +33,7 @@ if (!jwt_value) {
         {
           team_name: body.team_name,
           creator_id: body.creator_id,
-          team_type: body.team_type,
-          company_name : body.company_name
+          team_info_object: body.team_info_object,
         }
       ])
       .select("team_id")
