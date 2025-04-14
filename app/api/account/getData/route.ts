@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
             .single();
 
         if (error) {
-            console.error('خطأ في Supabase:', error);
+            console.log(error)
             return NextResponse.json(
                 { error: 'فشل في جلب بيانات المستخدم' },
                 { status: 500 }

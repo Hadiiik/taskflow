@@ -32,7 +32,7 @@ const fetchUserData = async (id: string): Promise<UserData> => {
     const response = await fetch(`/api/account/getData?user_id=${id}`);
     
     if (!response.ok) {
-      throw new Error('فشل في جلب بيانات المستخدم');
+      // add handel error logic
     }
 
     const { name, bio } = await response.json();
