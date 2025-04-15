@@ -5,7 +5,7 @@ import AccountCard from "./components_user/AccountCard";
 import TaskManager from './components_user/TaskManager';
 import TeamManager from './components_user/TeamManager';
 import { useTabHistory } from '../hooks/useTabHistory';
-
+import TeamActions from './components_user/TeamActions';
 const HomePage = () => {
     const [activeComponent, setActiveComponent] = useState<string | null>(null);
     const { handleTabChange } = useTabHistory(setActiveComponent);
@@ -26,6 +26,7 @@ const HomePage = () => {
             />}
                 {activeComponent === 'tasks' && <TaskManager />}
                 {activeComponent === 'teams' && <TeamManager />}  
+                {activeComponent === 'home' && <TeamActions />}
             </div>
         </div>
     );

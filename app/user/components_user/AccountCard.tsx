@@ -32,7 +32,19 @@ const fetchUserData = async (id: string): Promise<UserData> => {
     const response = await fetch(`/api/account/getData?user_id=${id}`);
     
     if (!response.ok) {
-      throw new Error('فشل في جلب بيانات المستخدم');
+      console.error('فشل في جلب بيانات المستخدم - حالة الاستجابة:', response.status);
+      // إرجاع بيانات افتراضية بدلاً من إطلاق خطأ
+      return {
+        name: "مستخدم",
+        bioData: {
+          Email: "",
+          PhoneNumber: "",
+          LinkedinUrl: "",
+          Bio: ""
+        },
+        completedTasks: 0,
+        teams: []
+      };
     }
 
     const { name, bio } = await response.json();
@@ -41,7 +53,7 @@ const fetchUserData = async (id: string): Promise<UserData> => {
     const bioData = typeof bio === 'string' ? JSON.parse(bio) : bio || {};
 
     return {
-      name,
+      name: name || "مستخدم",
       bioData: {
         Email: bioData.Email || "",
         PhoneNumber: bioData.PhoneNumber || "",
@@ -53,7 +65,18 @@ const fetchUserData = async (id: string): Promise<UserData> => {
     };
   } catch (error) {
     console.error('خطأ في جلب البيانات:', error);
-    throw error;
+    // إرجاع بيانات افتراضية في حالة الخطأ
+    return {
+      name: "مستخدم",
+      bioData: {
+        Email: "",
+        PhoneNumber: "",
+        LinkedinUrl: "",
+        Bio: ""
+      },
+      completedTasks: 0,
+      teams: []
+    };
   }
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import SidebarButton from './SidebarButton'; // استيراد مكون الزر
-import { FaUser, FaTasks, FaUsers, FaCog, FaBell } from 'react-icons/fa'; // استيراد الأيقونات
+import { FaUser, FaTasks, FaUsers, FaCog, FaBell, FaHome } from 'react-icons/fa'; // استيراد الأيقونات
 
 const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -48,6 +48,18 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                 <div className="p-6">
                     <h2 className="text-xl font-bold text-violet-900 mb-6 text-right">القائمة</h2>
                     <ul className="space-y-4">
+                        {/* زر الرئيسية */}
+                        <li>
+                            <SidebarButton
+                                text="الرئيسية"
+                                icon={<FaHome />}
+                                onClick={() => {
+                                    onMenuClick('home');
+                                    toggleSidebar();
+                                }}
+                            />
+                        </li>
+
                         {/* زر الحساب */}
                         <li>
                             <SidebarButton
