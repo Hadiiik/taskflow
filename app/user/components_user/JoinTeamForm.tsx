@@ -86,10 +86,10 @@ const JoinTeamForm = () => {
       </form>
 
       <div className="mt-4 text-sm text-gray-600 text-right">
-        <p>كيفية الحصول على رابط الدعوة:</p>
-        <ul className="list-disc pr-4 mt-2 space-y-1">
-          <li>اطلب من قائد الفريق مشاركة رابط الدعوة معك</li>
-          <li>تأكد من صحة الرابط قبل إدخاله</li>
+        <p>كيفية الحصول على رابط الدعوة : </p>
+        <ul className="list-disc pr-4 mt-2 space-y-1 text-right">
+          <p>اطلب من قائد الفريق مشاركة رابط الدعوة معك</p>
+          <p>تأكد من صحة الرابط قبل إدخاله</p>
         </ul>
       </div>
     </div>
