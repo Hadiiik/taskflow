@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { FaCheck, FaInfoCircle } from "react-icons/fa";
+import Link from "next/link"; // استيراد مكون Link
 
 interface Task {
   name: string;
   dueDate: string;
-  teamId: string; // رابط الفريق صاحب المهمة
+  teamId: string;
 }
 
 interface Team {
   id: string;
   name: string;
-  link: string; // رابط الفريق
 }
 
 interface TasksTeamProps {
@@ -22,7 +22,6 @@ const TasksTeam: React.FC<TasksTeamProps> = ({ tasks, teams }) => {
   const [rotatedTask, setRotatedTask] = useState<string | null>(null);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
 
-  // دالة لحساب الوقت المتبقي بالأيام
   const getRemainingTime = (dueDate: string): number => {
     const now = new Date();
     const due = new Date(dueDate);
@@ -30,7 +29,6 @@ const TasksTeam: React.FC<TasksTeamProps> = ({ tasks, teams }) => {
     return Math.ceil(diff);
   };
 
-  // دالة لتحديد لون المهمة
   const getTaskColor = (dueDate: string): string => {
     const remainingTime = getRemainingTime(dueDate);
     if (remainingTime >= 3) return "bg-green-300";
@@ -38,43 +36,35 @@ const TasksTeam: React.FC<TasksTeamProps> = ({ tasks, teams }) => {
     return "bg-red-300";
   };
 
-  // دالة لتدوير العنصر عند النقر عليه
   const handleTaskClick = (taskName: string) => {
     setRotatedTask(taskName);
-    setTimeout(() => setRotatedTask(null), 500); // إعادة التدوير بعد نصف ثانية
+    setTimeout(() => setRotatedTask(null), 500);
   };
 
-  // دالة لإتمام المهمة
   const handleCompleteTask = (taskName: string) => {
     setCompletedTasks((prev) => [...prev, taskName]);
     setTimeout(() => {
       setCompletedTasks((prev) => prev.filter((name) => name !== taskName));
-    }, 1000); // إزالة المهمة من القائمة بعد التأثير
+    }, 1000);
   };
 
-  // دالة للحصول على رابط الفريق واسمه
-  const getTeamInfo = (teamId: string): { link: string; name: string } => {
+  const getTeamName = (teamId: string): string => {
     const team = teams.find((team) => team.id === teamId);
-    return team ? { link: team.link, name: team.name } : { link: "#", name: "فريق غير معروف" };
+    return team ? team.name : "فريق غير معروف";
   };
 
   return (
     <div className="space-y-4">
       {tasks.map((task, index) => {
         const isCompleted = completedTasks.includes(task.name);
-
-        if (isCompleted) return null; // إخفاء المهمة المكتملة
-
-        const teamInfo = getTeamInfo(task.teamId); // الحصول على معلومات الفريق
+        if (isCompleted) return null;
 
         return (
           <div
             key={index}
             className={`p-3 sm:p-4 rounded-2xl border border-gray-200 shadow-sm transition-all duration-500 ease-in-out ${
               rotatedTask === task.name ? "rotate-x" : ""
-            } ${getTaskColor(task.dueDate)} w-full ${
-              isCompleted ? "bg-green-500 scale-110 opacity-0" : ""
-            }`}
+            } ${getTaskColor(task.dueDate)} w-full`}
             onClick={() => handleTaskClick(task.name)}
             style={{
               transform:
@@ -90,16 +80,15 @@ const TasksTeam: React.FC<TasksTeamProps> = ({ tasks, teams }) => {
                 <p className="text-xs sm:text-sm text-gray-600">
                   ينتهي في: {task.dueDate}
                 </p>
-                <a
-                  href={teamInfo.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* استبدال العنصر a بمكون Link */}
+                <Link 
+                  href={`/team/${task.teamId}`}
                   className="text-xs sm:text-sm text-blue-600 hover:underline"
+                  onClick={(e) => e.stopPropagation()} // منع انتشار الحدث
                 >
-                  {teamInfo.name} {/* عرض اسم الفريق */}
-                </a>
+                  {getTeamName(task.teamId)}
+                </Link>
               </div>
-              {/* الأزرار في نفس السطر في حالة الهاتف */}
               <div className="flex justify-center sm:justify-end gap-2 mt-2 sm:mt-0">
                 <button
                   className="p-1 sm:p-2 bg-gray-100 rounded-full text-green-600 hover:bg-green-100 transition"

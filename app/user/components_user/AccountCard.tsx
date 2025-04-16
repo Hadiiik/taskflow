@@ -297,7 +297,7 @@ const AccountCard: React.FC<AccountCardProps> = ({ id, onLogout }) => {
           <ul className="space-y-1">
             {userData.teams.map((team, index) => (
               <li key={index} className="text-xs sm:text-sm text-gray-700 border-b border-gray-200 pb-1">
-                <Link href={`/teams/${team.id}`} className="text-blue-600 underline">
+                <Link href={`/team/${team.id}`} className="text-blue-600 underline">
                   {team.name}
                 </Link>
               </li>

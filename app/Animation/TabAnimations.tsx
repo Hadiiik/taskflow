@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react';
 
 type TabType = string;
@@ -25,20 +26,39 @@ export const useTabAnimation = <T extends TabType>(activeTab: T) => {
   return { contentRef, underlineRef };
 };
 
+interface TabUnderlineProps {
+  activeTab: string;
+  underlineRef: React.RefObject<HTMLDivElement | null>;
+  tabCount?: number;
+}
+
 export const TabUnderline = ({
   activeTab,
-  underlineRef
-}: {
-  activeTab: 'best' | 'joined';
-  underlineRef: React.RefObject<HTMLDivElement | null>;
-}) => (
-  <div 
-    ref={underlineRef}
-    className={`absolute bottom-0 h-0.5 bg-blue-500 transition-all duration-300 ${
-      activeTab === 'best' ? 'left-0 right-1/2' : 'left-1/2 right-0'
-    }`}
-  />
-);
+  underlineRef,
+  tabCount = 2
+}: TabUnderlineProps) => {
+  const widthPercentage = 100 / tabCount;
+  let leftPosition = 0;
+
+  if (tabCount === 2) {
+    leftPosition = activeTab === 'best' ? 0 : 50;
+  } else if (tabCount === 3) {
+    if (activeTab === 'tasks') leftPosition = 0;
+    else if (activeTab === 'members') leftPosition = 33.33;
+    else if (activeTab === 'chats') leftPosition = 66.66;
+  }
+
+  return (
+    <div 
+      ref={underlineRef}
+      className="absolute bottom-0 h-0.5 bg-blue-500 transition-all duration-300"
+      style={{
+        width: `${widthPercentage}%`,
+        left: `${leftPosition}%`
+      }}
+    />
+  );
+};
 
 export const animationStyles = `
   .slide-transition {
