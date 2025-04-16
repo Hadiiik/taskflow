@@ -21,7 +21,7 @@ const HomePage = () => {
             
             <div className="container mx-auto px-4 py-20">
                         {activeComponent === 'account' &&  <AccountCard 
-                id="24" // يتم تمرير المعرف من الرابط
+                id="24" // get the id from local storage or cookies 
                 onLogout={handleLogout}
             />}
                 {activeComponent === 'tasks' && <TaskManager />}

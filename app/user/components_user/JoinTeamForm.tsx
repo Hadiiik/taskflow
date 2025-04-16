@@ -21,6 +21,7 @@ const JoinTeamForm = () => {
       setError('رابط الدعوة غير صالح');
       return;
     }
+    
 
     // محاكاة عملية الانضمام
     setIsLoading(true);
@@ -32,7 +33,7 @@ const JoinTeamForm = () => {
   };
 
   // دالة التحقق من صحة الرابط (يمكن تعديلها حسب متطلباتك)
-  const isValidInviteLink = (link: string ) => link.length > 10 /* مثال بسيط للتحقق*/;
+  const isValidInviteLink = (link: string ) => link.length > 10 
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg border border-violet-200 shadow-sm">

@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     if (jwt_user instanceof NextResponse) {
         return jwt_user;
     }
-
     try {
         // جلب بيانات name و bio من Supabase
         const { data, error } = await supabase
@@ -23,7 +22,7 @@ export async function GET(req: NextRequest) {
             .single();
 
         if (error) {
-            console.error('خطأ في Supabase:', error);
+            console.log(error)
             return NextResponse.json(
                 { error: 'فشل في جلب بيانات المستخدم' },
                 { status: 500 }

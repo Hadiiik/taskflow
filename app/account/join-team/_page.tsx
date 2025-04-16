@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CreateTeamForm = () => {
+const _page = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const CreateTeamForm = () => {
   )
 }
 
-export default CreateTeamForm
+export default _page
