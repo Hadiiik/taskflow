@@ -3,17 +3,17 @@ import React, { useState } from "react";
 import { FaTasks, FaUsers, FaComments } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 import { useTabAnimation, TabUnderline, animationStyles } from '../../Animation/TabAnimations';
-
+import AllTaskTeam from "./AllTaskTeam";
 const TeamTabs = () => {
   const [activeTab, setActiveTab] = useState<'tasks' | 'members' | 'chats'>('tasks');
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
   const { contentRef, underlineRef } = useTabAnimation(activeTab);
 
   // بيانات المهام
-  const teamTasks = [
-    { id: "1", title: "إنشاء واجهة المستخدم", status: "مكتمل" },
-    { id: "2", title: "تطوير نظام الدفع", status: "قيد العمل" },
-  ];
+  // const teamTasks = [
+  //   { id: "1", title: "إنشاء واجهة المستخدم", status: "مكتمل" },
+  //   { id: "2", title: "تطوير نظام الدفع", status: "قيد العمل" },
+  // ];
 
   // بيانات الأعضاء
   const teamMembers = [
@@ -65,19 +65,11 @@ const TeamTabs = () => {
         ref={contentRef}
       >
         <div className={`content-wrapper ${activeTab === 'tasks' ? 'active' : ''}`}>
-          {activeTab === 'tasks' && (
-            <div className="p-4">
-              <h2 className="text-xl font-bold mb-4">مهام الفريق</h2>
-              <ul className="space-y-3">
-                {teamTasks.map(task => (
-                  <li key={task.id} className="p-3 border rounded-lg">
-                    <h3 className="font-medium">{task.title}</h3>
-                    <p className="text-sm text-gray-500">الحالة: {task.status}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+        {activeTab === 'tasks' && (
+          <div className="mt-6">
+            <AllTaskTeam teamId="2" />
+          </div>
+        )}
           
           {activeTab === 'members' && (
             <div className="p-4">
