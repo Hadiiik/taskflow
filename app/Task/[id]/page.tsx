@@ -1,10 +1,8 @@
 import React from 'react';
-
+import A from '../components_task/A';
 const TaskPage = () => {
   return (
-    <div className="text-center p-4">
-      <h1 className="text-2xl font-bold text-gray-800">خارطة المهمة</h1>
-    </div>
+    <A/>
   );
 };
 
