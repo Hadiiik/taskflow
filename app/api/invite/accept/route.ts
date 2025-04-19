@@ -1,4 +1,4 @@
-import createJwt, { decodeJWT } from "@/lib/createJwt";
+import  { decodeJWT } from "@/lib/createJwt";
 import { supabase } from "@/lib/supabase";
 import { JwtPayload } from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
@@ -39,19 +39,7 @@ export async function POST(req: NextRequest){
       }
 
 
-      let team_id_arry:number[] =  jwt_user.team_id_arry ;
-      if (!team_id_arry) 
-        team_id_arry = [invite_jwt?.team_id]; 
-      else  
-        team_id_arry.push(invite_jwt?.team_id);
-      jwt_user.team_id_arry = team_id_arry;
-
-      const newJwt = createJwt({
-        email: jwt_user.email,
-        user_ip : jwt_user.user_ip,
-        id : jwt_user.id,
-        team_id_arry : jwt_user.team_id_arry
-      });
+      
 
 
       //add user to members table 
@@ -66,6 +54,6 @@ export async function POST(req: NextRequest){
       console.log(d,e)                        
       
       const res = NextResponse.json({ "message": "done succsefuly" ,"team_id": invite_jwt.team_id , "team_name":data.team_name }, { status: 201 });
-      res.cookies.set("jwt", newJwt || "", { path: "/" , maxAge : 60 * 60 * 24 * 365 * 20});
+      
     return res
 }
