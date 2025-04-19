@@ -7,7 +7,6 @@ import TeamTabs from '../components_team/TeamTabs';
 
 const TeamPage = () => {
   const teamName =  'الفريق';
-
   return (
     <div className="bg-gray-50 min-h-screen">
       <header className="bg-violet-600 text-white shadow-sm">
