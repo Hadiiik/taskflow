@@ -4,17 +4,12 @@ import { FaTasks, FaUsers, FaComments } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 import { useTabAnimation, TabUnderline, animationStyles } from '../../Animation/TabAnimations';
 import AllTaskTeam from "./AllTaskTeam";
-
+import TeamMembers from "./TeamMembers";
 const TeamTabs = () => {
   const [activeTab, setActiveTab] = useState<'tasks' | 'members' | 'chats'>('tasks');
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
   const { contentRef, underlineRef } = useTabAnimation(activeTab);
 
-  // بيانات الأعضاء
-  const teamMembers = [
-    { id: "1", name: "أحمد محمد", role: "مصمم واجهات" },
-    { id: "2", name: "سارة علي", role: "مطورة الواجهة الأمامية" },
-  ];
 
   // بيانات المحادثات
   const teamChats = [
@@ -80,17 +75,9 @@ const TeamTabs = () => {
           )}
           
           {activeTab === 'members' && (
-            <div className="p-4">
-              <h2 className="text-xl font-bold mb-4">أعضاء الفريق</h2>
-              <ul className="space-y-3">
-                {teamMembers.map(member => (
-                  <li key={member.id} className="p-3 border rounded-lg">
-                    <h3 className="font-medium">{member.name}</h3>
-                    <p className="text-sm text-gray-500">{member.role}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <div className="mt-6">
+            <TeamMembers teamId="2" />
+          </div>
           )}
           
           {activeTab === 'chats' && (

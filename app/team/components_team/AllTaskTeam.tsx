@@ -157,7 +157,7 @@ const AllTaskTeam: React.FC<AllTaskTeamProps> = ({ teamId }) => {
                       key={index} 
                       className="flex justify-between items-center py-1 border-b border-dashed border-white border-opacity-20 text-xs md:text-sm"
                     >
-                      <div className={`bg-white bg-opacity-10 md:bg-opacity-20 px-2 py-1 rounded-lg text-center`}>
+                      <div className={`bg-white bg-opacity-60 md:bg-opacity-20 px-2 py-1 rounded-lg text-center`}>
                         <span className={`text-left ${textColor}`}>{detail.stageEndDate} :ينتهي في</span>
                       </div>
                       <span className="text-right">{detail.stageName}</span>

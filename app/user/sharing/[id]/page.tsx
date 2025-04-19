@@ -16,7 +16,7 @@ const ProfilePage = async (
 
     return (
         <div className="p-4 sm:p-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-violet-900 mb-4 text-center">صفحة المستخدم</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-violet-900 mb-4 text-center">صفحة الزيارة</h1>
             <SheerUser id={id as string} /> 
         </div>
     );
