@@ -4,16 +4,11 @@ import { FaTasks, FaUsers, FaComments } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 import { useTabAnimation, TabUnderline, animationStyles } from '../../Animation/TabAnimations';
 import AllTaskTeam from "./AllTaskTeam";
+
 const TeamTabs = () => {
   const [activeTab, setActiveTab] = useState<'tasks' | 'members' | 'chats'>('tasks');
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
   const { contentRef, underlineRef } = useTabAnimation(activeTab);
-
-  // بيانات المهام
-  // const teamTasks = [
-  //   { id: "1", title: "إنشاء واجهة المستخدم", status: "مكتمل" },
-  //   { id: "2", title: "تطوير نظام الدفع", status: "قيد العمل" },
-  // ];
 
   // بيانات الأعضاء
   const teamMembers = [
@@ -54,22 +49,35 @@ const TeamTabs = () => {
       }
     },
     trackMouse: true,
+    trackTouch: true,
+    delta: 50,
+    swipeDuration: 300,
+    preventScrollOnSwipe: true,
   });
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      e.preventDefault();
+    }
+  };
+
   return (
-    <div className="h-screen flex flex-col">
+    <div 
+      className="h-screen flex flex-col" 
+      {...handlers}
+      onTouchMove={handleTouchMove}
+    >
       {/* المحتوى الرئيسي */}
       <div 
         className={`flex-1 overflow-y-auto pb-16 ${transitionDirection}-transition`}
-        {...handlers}
         ref={contentRef}
       >
         <div className={`content-wrapper ${activeTab === 'tasks' ? 'active' : ''}`}>
-        {activeTab === 'tasks' && (
-          <div className="mt-6">
-            <AllTaskTeam teamId="2" />
-          </div>
-        )}
+          {activeTab === 'tasks' && (
+            <div className="mt-6">
+              <AllTaskTeam teamId="2" />
+            </div>
+          )}
           
           {activeTab === 'members' && (
             <div className="p-4">
