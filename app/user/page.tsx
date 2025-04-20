@@ -6,6 +6,8 @@ import TaskManager from './components_user/TaskManager';
 import TeamManager from './components_user/TeamManager';
 import { useTabHistory } from '../hooks/useTabHistory';
 import TeamActions from './components_user/TeamActions';
+import TheAdminTeams from './components_user/TheAdminTeams';
+import SharedTeamsToggle from './components_user/SharedTeamsToggle';
 const HomePage = () => {
     const [activeComponent, setActiveComponent] = useState<string | null>(null);
     const { handleTabChange } = useTabHistory(setActiveComponent);
@@ -15,18 +17,24 @@ const HomePage = () => {
         console.log('تم تسجيل الخروج');
       };
 
-    return (
+      return (
         <div className="min-h-screen bg-gray-50">
             <Navbar onMenuClick={handleTabChange} />
             
             <div className="container mx-auto px-4 py-20">
-                        {activeComponent === 'account' &&  <AccountCard 
-                id="24" // get the id from local storage or cookies 
-                onLogout={handleLogout}
-            />}
+                {activeComponent === 'account' &&  <AccountCard 
+                    id="24" // get the id from local storage or cookies 
+                    onLogout={handleLogout}
+                />}
                 {activeComponent === 'tasks' && <TaskManager />}
                 {activeComponent === 'teams' && <TeamManager />}  
-                {activeComponent === 'home' && <TeamActions />}
+                {activeComponent === 'home' && (
+                    <div className="space-y-8">
+                        <TeamActions />
+                        <TheAdminTeams userId="24" /> {/* يمكنك تمرير ID المستخدم الفعلي هنا */}
+                        <SharedTeamsToggle/>
+                    </div>
+                )}
             </div>
         </div>
     );

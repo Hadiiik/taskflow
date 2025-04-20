@@ -24,8 +24,7 @@ const TeamList: React.FC<TeamListProps> = ({ teams }) => {
         >
           <a className="block w-full"> {/* إضافة عنصر a لتحسين الأداء */}
             <div
-              className="flex flex-row-reverse items-center justify-start w-full h-16 bg-white border-2 border-violet-500 rounded-s-full rounded-e-full shadow-sm hover:shadow-md transition-all
-                        md:h-24 cursor-pointer" // إضافة cursor-pointer
+              className="p-3 border-2 border-violet-200 rounded-full flex flex-row-reverse items-center hover:bg-violet-50 transition-colors duration-200"
             >
               {/* أيقونة الفريق */}
               <div className="flex items-center justify-center w-10 h-10 bg-violet-100 rounded-full mr-2">
