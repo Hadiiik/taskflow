@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import Link from "next/link";
+import fetchTeams from "@/client_helpers/fetch_admin_teams";
 
 interface Team {
   id: string;
@@ -10,39 +11,54 @@ interface Team {
 
 const TheAdminTeams: React.FC = () => {
   // بيانات الفرق الثابتة داخل المكون
-  const teams: Team[] = [
-    {
-      id: "1",
-      name: "فريق التطوير",
-      description: "مسؤول عن تطوير وبرمجة التطبيقات والمواقع الإلكترونية",
-    },
-    {
-      id: "2",
-      name: "فريق التصميم",
-      description: "يبتكر واجهات المستخدم وتجربة المستخدم المميزة",
-    },
-    {
-      id: "3",
-      name: "فريق التسويق",
-      description: "يسوق للمنتجات ويحلل بيانات السوق لتحسين الاستراتيجيات",
-    },
-    {
-      id: "4",
-      name: "فريق الدعم",
-      description: "يوفر الدعم الفني ويساعد العملاء في حل مشاكلهم",
-    },
-  ];
+  const [teams, setTeams] = useState<Team[]>([])
+
+  useEffect(()=>{
+    const fetch_teams = async () => {
+      const result = await fetchTeams();
+      console.log(result)
+      if (result.success) {
+        const newteams: Team[] = result.teams.map((team: any) => ({
+          id: team.team_id.toString(),
+          name: team.team_name,
+          description: team.team_info_object?.team_description || "",
+        }));
+        setTeams(newteams);
+      }
+      return result; // Ensure the result is returned
+    };
+
+    const storedTeams = sessionStorage.getItem("teams");
+    if (storedTeams) {
+      const parsedTeams = JSON.parse(storedTeams);
+      setTeams(
+      parsedTeams.map((team: any) => ({
+        id: team.team_id,
+        name: team.team_name,
+        description: team.team_info_object?.team_description || "", // Add a default description if not available
+      }))
+      );
+    } else {
+      const fetchAndStoreTeams = async () => {
+        const result = await fetch_teams();
+        sessionStorage.setItem("teams", JSON.stringify(result.teams));
+      };
+      fetchAndStoreTeams();
+    }
+
+    
+  },[])
 
   return (
     <div className="flex flex-col gap-3 p-4 w-full">
       {teams.length > 0 ? (
         <>
-          <h2 className="text-right text-lg font-medium text-violet-700 mb-2">
+            <h2 className="text-right text-lg font-medium text-violet-700 mb-2">
             قم بإدارة فرقك من هنا
-          </h2>
-          {teams.map((team) => (
+            </h2>
+            {[...teams].reverse().map((team, i) => (
             <Link
-              key={team.id}
+              key={i}
               href={`/Admin/${team.id}`}
               passHref
               legacyBehavior

@@ -55,6 +55,31 @@ const CreateTeamForm = () => {
 
   const handleSubmit =async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    if (validateForm()) {
+      const result = await createTeam({
+      team_name: formData.teamName,
+      creator_id: '0', // Replace '0' with the appropriate creator ID
+      team_info_object: {
+        team_description: formData.teamDescription
+      }
+      });
+      if (!result.success) return; // Show error message
+      const existingTeams = Array.isArray(JSON.parse(localStorage.getItem('teams') || '[]')) 
+      ? JSON.parse(sessionStorage.getItem('teams') || '[]') 
+      : [];
+      const updatedTeams = [
+      ...existingTeams,
+      {
+        team_name: formData.teamName,
+        team_id: result.team_id,
+        team_info_object: { team_description: formData.teamDescription }
+      }
+      ];
+      sessionStorage.setItem('teams', JSON.stringify(updatedTeams));
+      localStorage.setItem('current_team_id', result.team_id);
+      alert(`تم إنشاء الفريق: ${formData.teamName}`);
+      window.location.reload(); // Refresh the page
+    }
     
     if (validateForm()) {
       // هنا يمكنك إضافة منطق حفظ البيانات
@@ -68,16 +93,17 @@ const CreateTeamForm = () => {
       if(!result.success) 
         return;//show error message;
       const existingTeams = Array.isArray(JSON.parse(localStorage.getItem('teams') || '[]')) 
-        ? JSON.parse(localStorage.getItem('teams') || '[]') 
+        ? JSON.parse(sessionStorage.getItem('teams') || '[]') 
         : [];
       const updatedTeams = [
         ...existingTeams,
         {
           team_name: formData.teamName,
           team_id: result.team_id,
+          team_info_object:{team_description:formData.teamDescription}
         }
       ];
-      localStorage.setItem('teams', JSON.stringify(updatedTeams));
+      sessionStorage.setItem('teams', JSON.stringify(updatedTeams));
       localStorage.setItem('current_team_id', result.team_id);
       alert(`تم إنشاء الفريق: ${formData.teamName}`);
     }
