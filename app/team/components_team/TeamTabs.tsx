@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTasks, FaUsers, FaComments } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 import { useTabAnimation, TabUnderline, animationStyles } from '../../Animation/TabAnimations';
@@ -55,8 +55,17 @@ const TeamTabs = () => {
       e.preventDefault();
     }
   };
+  const [currentTeamId, setCurrentTeamId] = useState("1");
 
+  useEffect(() => {
+    const storedTeamId = localStorage.getItem('current_team_id') || "1";
+    setCurrentTeamId(storedTeamId);
+  }, []);
   return (
+    <>
+    <h1>
+      {currentTeamId ? `الفريق ${currentTeamId}` : 'الفريق الافتراضي'}
+    </h1>
     <div 
       className="h-screen flex flex-col" 
       {...handlers}
@@ -136,6 +145,7 @@ const TeamTabs = () => {
       {/* إضافة أنماط CSS */}
       <style jsx>{animationStyles}</style>
     </div>
+    </>
   );
 };
 

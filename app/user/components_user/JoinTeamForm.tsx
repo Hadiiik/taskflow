@@ -6,30 +6,25 @@ const JoinTeamForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    setIsLoading(isLoading);
     e.preventDefault();
     setError('');
     setSuccessMessage('');
-
+  
     // التحقق من صحة الرابط
     if (!inviteLink.trim()) {
       setError('يرجى إدخال رابط الدعوة');
       return;
     }
-
+  
     if (!isValidInviteLink(inviteLink)) {
       setError('رابط الدعوة غير صالح');
       return;
     }
-    
-
-    // محاكاة عملية الانضمام
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setSuccessMessage('تم الانضمام إلى الفريق بنجاح!');
-      setInviteLink('');
-    }, 1500);
+  
+    // تحويل المستخدم إلى الرابط
+    window.location.href = inviteLink;
   };
 
   // دالة التحقق من صحة الرابط (يمكن تعديلها حسب متطلباتك)

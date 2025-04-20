@@ -25,8 +25,6 @@ try{
     if (!jwt_user || typeof jwt_user === 'string' || !jwt_user.id) {
         return NextResponse.json({ error: "Invalid JWT" }, { status: 500 });
       }
-    console.log(jwt_user)
-    console.log("team_id",req_body.team_id)
     const invite:invite_jwt = {
         "team_id": req_body.team_id,
         "invitor_id":jwt_user.id,
