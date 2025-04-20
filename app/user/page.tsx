@@ -7,7 +7,7 @@ import TeamManager from './components_user/TeamManager';
 import { useTabHistory } from '../hooks/useTabHistory';
 import TeamActions from './components_user/TeamActions';
 import TheAdminTeams from './components_user/TheAdminTeams';
-import SharedTeamsToggle from './components_user/SharedTeamsToggle';
+
 const HomePage = () => {
     const [activeComponent, setActiveComponent] = useState<string | null>(null);
     const { handleTabChange } = useTabHistory(setActiveComponent);
@@ -31,8 +31,8 @@ const HomePage = () => {
                 {activeComponent === 'home' && (
                     <div className="space-y-8">
                         <TeamActions />
-                        <TheAdminTeams userId="24" /> {/* يمكنك تمرير ID المستخدم الفعلي هنا */}
-                        <SharedTeamsToggle/>
+                        <TheAdminTeams /> {/* يمكنك تمرير ID المستخدم الفعلي هنا */}
+                        
                     </div>
                 )}
             </div>

@@ -10,11 +10,6 @@ const TeamManager = () => {
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
   const { contentRef, underlineRef } = useTabAnimation(activeTab);
 
-  // بيانات الفرق
-  const bestTeams = [
-    { id: "1", name: "فريق التصميم", description: "متخصصون في تصميم الواجهات التفاعلية." },
-    { id: "2", name: "فريق التطوير", description: "نطور حلول برمجية مبتكرة وفعالة." },
-  ];
 
   const joinedTeams = [
     { id: "3", name: "فريق التسويق", description: "نساعدك في الوصول إلى جمهورك المستهدف.", completedTasks: 12 },
@@ -45,7 +40,7 @@ const TeamManager = () => {
           {activeTab === 'best' ? (
             <TopTeams teams={joinedTeams} />
           ) : (
-            <TeamList teams={bestTeams} />
+            <TeamList/>
           )}
         </div>
       </div>

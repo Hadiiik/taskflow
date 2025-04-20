@@ -66,7 +66,19 @@ const CreateTeamForm = () => {
         }
       })
       if(!result.success) 
-        return;//show error message
+        return;//show error message;
+      const existingTeams = Array.isArray(JSON.parse(localStorage.getItem('teams') || '[]')) 
+        ? JSON.parse(localStorage.getItem('teams') || '[]') 
+        : [];
+      const updatedTeams = [
+        ...existingTeams,
+        {
+          team_name: formData.teamName,
+          team_id: result.team_id,
+        }
+      ];
+      localStorage.setItem('teams', JSON.stringify(updatedTeams));
+      localStorage.setItem('current_team_id', result.team_id);
       alert(`تم إنشاء الفريق: ${formData.teamName}`);
     }
   };
