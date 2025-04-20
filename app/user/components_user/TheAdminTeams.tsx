@@ -18,7 +18,7 @@ const TheAdminTeams: React.FC = () => {
       const result = await fetchTeams();
       console.log(result)
       if (result.success) {
-        const newteams: Team[] = result.teams.map((team: any) => ({
+        const newteams: Team[] = result.teams.map((team: { team_id: number; team_name: string; team_info_object?: { team_description?: string } }) => ({
           id: team.team_id.toString(),
           name: team.team_name,
           description: team.team_info_object?.team_description || "",
@@ -32,7 +32,7 @@ const TheAdminTeams: React.FC = () => {
     if (storedTeams) {
       const parsedTeams = JSON.parse(storedTeams);
       setTeams(
-      parsedTeams.map((team: any) => ({
+      parsedTeams.map((team: { team_id: string; team_name: string; team_info_object?: { team_description?: string } }) => ({
         id: team.team_id,
         name: team.team_name,
         description: team.team_info_object?.team_description || "", // Add a default description if not available
