@@ -1,16 +1,26 @@
 import React from 'react';
 
 interface SidebarButtonProps {
-    text: string; // نص الزر
-    onClick?: () => void; // دالة عند النقر (اختياري)
-    icon?: React.ReactNode; // أيقونة الزر (اختياري)
+    text: string;
+    onClick?: () => void;
+    icon?: React.ReactNode;
+    isActive?: boolean;
 }
 
-const SidebarButton: React.FC<SidebarButtonProps> = ({ text, onClick, icon }) => {
+const SidebarButton: React.FC<SidebarButtonProps> = ({ 
+    text, 
+    onClick, 
+    icon,
+    isActive = false
+}) => {
     return (
         <button
             onClick={onClick}
-            className="w-full flex items-center justify-end space-x-3 p-2 text-violet-700 hover:text-violet-900 transition duration-300 focus:outline-none rtl-text"
+            className={`w-full flex items-center justify-end space-x-3 p-2 transition duration-300 focus:outline-none rtl-text ${
+                isActive 
+                    ? 'bg-violet-400 bg-opacity-20 text-violet-700' 
+                    : 'text-violet-700 hover:text-violet-900 hover:bg-violet-100'
+            }`}
         >
             {/* نص الزر */}
             <span className="text-sm font-medium">{text}</span>

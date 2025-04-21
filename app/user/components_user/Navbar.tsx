@@ -5,9 +5,16 @@ import { FaUser, FaTasks, FaUsers, FaCog, FaBell, FaHome } from 'react-icons/fa'
 
 const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState('home'); // حالة لتتبع التبويب النشط
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
+    };
+
+    const handleMenuClick = (component: string) => {
+        setActiveTab(component); // تحديث التبويب النشط
+        onMenuClick(component);
+        toggleSidebar();
     };
 
     return (
@@ -53,10 +60,8 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                             <SidebarButton
                                 text="الرئيسية"
                                 icon={<FaHome />}
-                                onClick={() => {
-                                    onMenuClick('home');
-                                    toggleSidebar();
-                                }}
+                                isActive={activeTab === 'home'}
+                                onClick={() => handleMenuClick('home')}
                             />
                         </li>
 
@@ -65,10 +70,8 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                             <SidebarButton
                                 text="الحساب"
                                 icon={<FaUser />}
-                                onClick={() => {
-                                    onMenuClick('account');
-                                    toggleSidebar();
-                                }}
+                                isActive={activeTab === 'account'}
+                                onClick={() => handleMenuClick('account')}
                             />
                         </li>
 
@@ -77,10 +80,8 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                             <SidebarButton
                                 text="المهام"
                                 icon={<FaTasks />}
-                                onClick={() => {
-                                    onMenuClick('tasks');
-                                    toggleSidebar();
-                                }}
+                                isActive={activeTab === 'tasks'}
+                                onClick={() => handleMenuClick('tasks')}
                             />
                         </li>
                         
@@ -89,10 +90,8 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                             <SidebarButton
                                 text="الفرق"
                                 icon={<FaUsers />}
-                                onClick={() => {
-                                    onMenuClick('teams');
-                                    toggleSidebar();
-                                }}
+                                isActive={activeTab === 'teams'}
+                                onClick={() => handleMenuClick('teams')}
                             />
                         </li>
 
@@ -101,10 +100,8 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                             <SidebarButton
                                 text="الإعدادات"
                                 icon={<FaCog />}
-                                onClick={() => {
-                                    onMenuClick('settings');
-                                    toggleSidebar();
-                                }}
+                                isActive={activeTab === 'settings'}
+                                onClick={() => handleMenuClick('settings')}
                             />
                         </li>
 
@@ -113,10 +110,8 @@ const Navbar = ({ onMenuClick }: { onMenuClick: (component: string) => void }) =
                             <SidebarButton
                                 text="الإشعارات"
                                 icon={<FaBell />}
-                                onClick={() => {
-                                    onMenuClick('notifications');
-                                    toggleSidebar();
-                                }}
+                                isActive={activeTab === 'notifications'}
+                                onClick={() => handleMenuClick('notifications')}
                             />
                         </li>
                     </ul>
