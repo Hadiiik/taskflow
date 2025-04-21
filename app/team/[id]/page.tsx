@@ -1,10 +1,6 @@
 import React from 'react';
 import TeamTabs from '../components_team/TeamTabs';
 
-
-
-
-
 const TeamPage = () => {
   const teamName =  'الفريق';
   return (

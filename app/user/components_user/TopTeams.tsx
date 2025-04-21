@@ -1,6 +1,6 @@
 import React from "react";
 import { FaUserPlus, FaExternalLinkAlt } from "react-icons/fa";
-
+import Link from "next/link";
 interface Team {
   id: string;
   name: string;
@@ -60,15 +60,14 @@ const TopTeams: React.FC<TopTeamsProps> = ({ teams }) => {
             </button>
 
             {/* زر زيارة صفحة الفريق */}
-            <a
-              href={``}
-              target="_blank"
+            <Link
+              href={`team/sharing/${team.id}`}
               rel="noopener noreferrer"
               className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full hover:bg-blue-200 transition-colors"
               title="زيارة الصفحة"
             >
               <FaExternalLinkAlt className="text-blue-500 w-4 h-4" />
-            </a>
+            </Link>
           </div>
         </div>
       ))}
