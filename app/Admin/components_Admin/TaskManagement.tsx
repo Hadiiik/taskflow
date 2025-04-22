@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaChevronDown, FaMapMarkedAlt, FaPlus, FaEdit, FaSave, FaTimes, FaTrash, FaUndo } from 'react-icons/fa';
+import { useTasks } from './Context';
 import Link from 'next/link';
 import TimerComponent from '@/app/team/components_team/TimerComponent';
 
@@ -46,41 +47,7 @@ const TaskManagement: React.FC<TaskManagementProps> = ({ teamId }) => {
       return 'text-white';
     }
   };
-
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: '1',
-      taskName: 'تطوير واجهة المستخدم',
-      creationDate: '2023-05-10',
-      endDate: '2025-04-24',
-      details: [
-        { stageName: 'التصميم', stageEndDate: '2025-05-20' },
-        { stageName: 'التطوير', stageEndDate: '2025-04-30' },
-        { stageName: 'الاختبار', stageEndDate: '2023-06-10' },
-      ],
-    },
-    {
-      id: '2',
-      taskName: 'تحسين أداء الخادم',
-      creationDate: '2023-05-15',
-      endDate: '2025-05-5',
-      details: [
-        { stageName: 'التحليل', stageEndDate: '2025-04-20' },
-        { stageName: 'التنفيذ', stageEndDate: '2025-05-25' },
-      ],
-    },
-    {
-      id: '3',
-      taskName: 'إضافة ميزة الدفع الإلكتروني',
-      creationDate: '2023-05-20',
-      endDate: '2025-06-30',
-      details: [
-        { stageName: 'دراسة الجدوى', stageEndDate: '2025-05-25' },
-        { stageName: 'التكامل', stageEndDate: '2025-06-10' },
-        { stageName: 'التوثيق', stageEndDate: '2023-06-20' },
-      ],
-    },
-  ]);
+  const { tasks, setTasks } = useTasks();
   
   const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
   const [newStageData, setNewStageData] = useState({

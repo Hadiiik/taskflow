@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { TaskProvider } from "./Context";
 import { FaTasks, FaUsers, FaComments } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 import { useTabAnimation, TabUnderline, animationStyles } from '../../Animation/TabAnimations';
 import TaskManagement from "./TaskManagement";
-
+import AddTaskButton from "./AddTaskButton";
 const AdminTabs = () => {
   const [activeTab, setActiveTab] = useState<'tasks' | 'members' | 'chats'>('tasks');
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
@@ -61,6 +62,8 @@ const AdminTabs = () => {
     const storedTeamId = localStorage.getItem('current_team_id') || "1";
     setCurrentTeamId(storedTeamId);
   }, []);
+
+
   return (
     <>
     <h1>
@@ -80,7 +83,12 @@ const AdminTabs = () => {
           {activeTab === 'tasks' && (
             <div className="mt-6">
               {/* هون فرق وإنشاء وتعديل */}
-              <TaskManagement teamId="24"/>
+              <TaskProvider>
+                <div className="space-y-4">
+                  <AddTaskButton />
+                  <TaskManagement teamId="team123" />
+                </div>
+              </TaskProvider>
             </div>
           )}
           
