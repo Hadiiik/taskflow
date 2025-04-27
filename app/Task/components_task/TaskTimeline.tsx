@@ -1,15 +1,31 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { FiChevronLeft, FiChevronRight, FiCalendar, FiUsers } from 'react-icons/fi';
 
-const AdvancedTaskTimeline = ({ taskName, taskEndDate, taskId, stages }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [progressPercentage, setProgressPercentage] = useState(0);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeStage, setActiveStage] = useState(null);
+interface Stage {
+  name: string;
+  members: string[];
+  endDate: string;
+}
 
-  console.log(taskId+taskEndDate+taskName+stages);
+interface AdvancedTaskTimelineProps {
+  taskName: string;
+  taskEndDate: string;
+  taskId: string;
+  stages: Stage[];
+}
+
+const AdvancedTaskTimeline: React.FC<AdvancedTaskTimelineProps> = ({ 
+  taskName, 
+  taskEndDate, 
+  taskId, 
+  stages 
+}) => {
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [progressPercentage, setProgressPercentage] = useState<number>(0);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [activeStage, setActiveStage] = useState<number | null>(null);
+
   // تحديث التاريخ والتقدم
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,8 +41,8 @@ const AdvancedTaskTimeline = ({ taskName, taskEndDate, taskId, stages }) => {
     const firstStageDate = new Date(stages[0].endDate);
     const startDate = firstStageDate > new Date() ? new Date() : firstStageDate;
     const endDate = new Date(taskEndDate);
-    const totalDuration = endDate - startDate;
-    const elapsedDuration = currentDate - startDate;
+    const totalDuration = endDate.getTime() - startDate.getTime();
+    const elapsedDuration = currentDate.getTime() - startDate.getTime();
 
     const percentage = Math.min(100, Math.max(0, (elapsedDuration / totalDuration) * 100));
     setProgressPercentage(percentage);
@@ -37,13 +53,13 @@ const AdvancedTaskTimeline = ({ taskName, taskEndDate, taskId, stages }) => {
   }, [currentDate, stages, taskEndDate]);
 
   // تأثير حركة الشريط الزمني
-  const getTimelinePosition = () => {
+  const getTimelinePosition = (): number => {
     if (activeStage === null || stages.length === 0) return 0;
     
-    const stageStart = activeStage === 0 ? 0 : new Date(stages[activeStage - 1].endDate);
+    const stageStart = activeStage === 0 ? new Date() : new Date(stages[activeStage - 1].endDate);
     const stageEnd = new Date(stages[activeStage].endDate);
-    const stageDuration = stageEnd - stageStart;
-    const stageElapsed = currentDate - stageStart;
+    const stageDuration = stageEnd.getTime() - stageStart.getTime();
+    const stageElapsed = currentDate.getTime() - stageStart.getTime();
     
     return Math.min(100, Math.max(0, (stageElapsed / stageDuration) * 100));
   };
@@ -183,7 +199,7 @@ const AdvancedTaskTimeline = ({ taskName, taskEndDate, taskId, stages }) => {
             const stageEndDate = new Date(stage.endDate);
             const isCompleted = stageEndDate < currentDate;
             const isCurrent = index === activeStage;
-            const isUpcoming = index > activeStage;
+            const isUpcoming = index > (activeStage || 0);
 
             return (
               <div 
@@ -285,19 +301,6 @@ const AdvancedTaskTimeline = ({ taskName, taskEndDate, taskId, stages }) => {
       `}</style>
     </div>
   );
-};
-
-AdvancedTaskTimeline.propTypes = {
-  taskName: PropTypes.string.isRequired,
-  taskEndDate: PropTypes.string.isRequired,
-  taskId: PropTypes.string.isRequired,
-  stages: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      members: PropTypes.arrayOf(PropTypes.string).isRequired,
-      endDate: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };
 
 export default AdvancedTaskTimeline;
