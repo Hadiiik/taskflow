@@ -1,15 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { TaskProvider } from "./Context";
 import { FaTasks, FaUsers, FaComments } from "react-icons/fa";
 import { useSwipeable } from "react-swipeable";
 import { useTabAnimation, TabUnderline, animationStyles } from '../../Animation/TabAnimations';
 import TaskManagement from "./TaskManagement";
-import AddTaskButton from "./AddTaskButton";
+
+
 const AdminTabs = () => {
   const [activeTab, setActiveTab] = useState<'tasks' | 'members' | 'chats'>('tasks');
   const [transitionDirection, setTransitionDirection] = useState<'left' | 'right'>('right');
   const { contentRef, underlineRef } = useTabAnimation(activeTab);
+
 
 
   // بيانات المحادثات
@@ -17,6 +18,9 @@ const AdminTabs = () => {
     { id: "1", sender: "أحمد محمد", message: "هل انتهيت من التصميم؟", time: "10:30 ص" },
     { id: "2", sender: "سارة علي", message: "نعم، سأرسله الآن", time: "10:35 ص" },
   ];
+
+  //بيانات المهمة 
+
 
   const changeTab = (newTab: 'tasks' | 'members' | 'chats') => {
     const tabsOrder = ['tasks', 'members', 'chats'];
@@ -83,12 +87,7 @@ const AdminTabs = () => {
           {activeTab === 'tasks' && (
             <div className="mt-6">
               {/* هون فرق وإنشاء وتعديل */}
-              <TaskProvider>
-                <div className="space-y-4">
-                  <AddTaskButton />
-                  <TaskManagement teamId="team123" />
-                </div>
-              </TaskProvider>
+              <TaskManagement/>
             </div>
           )}
           
